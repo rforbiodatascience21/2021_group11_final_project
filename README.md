@@ -6,4 +6,8 @@ This is Sofie's test of git.
 
 
 
+
 Master-test.
+
+This is Sofie's second test of git.
+
