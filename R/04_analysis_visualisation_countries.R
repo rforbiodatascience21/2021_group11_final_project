@@ -18,7 +18,7 @@ my_data_clean_aug <- read_tsv(file = "/cloud/project/data/03_my_data_clean_aug.t
 # Boxplot
 
 
-my_data_clean_aug %>% 
+pH_boxplot <- my_data_clean_aug %>% 
   ggplot(aes(site, pH)) +
   geom_boxplot() +
   ggtitle("pH")
@@ -32,7 +32,7 @@ my_data_clean_aug %>%
 
 ## Temperature ##
 # Boxplot
-my_data_clean_aug %>% 
+temp_boxplot <- my_data_clean_aug %>% 
   ggplot(aes(site, Temp)) +
   geom_boxplot() +
   ggtitle("Temperature")

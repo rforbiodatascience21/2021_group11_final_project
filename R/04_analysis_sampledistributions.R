@@ -19,7 +19,7 @@ description_data <- my_data_clean_aug %>%
 
 # Visualise data --------------------------------------------------------------
 # Distribution of the samples within the two sites
-samplesdist_historgam <- ggplot(data = description_data, mapping = aes(x = latrine_number, fill = site))  +
+samplesdist_histogram <- ggplot(data = description_data, mapping = aes(x = latrine_number, fill = site))  +
   geom_bar(alpha = 0.8, position = position_dodge(1), width = 0.5) +
   labs(x = "Latrine", y = "Samples within Latrine", title ="Distribution of Samples") +
   theme(legend.position = "none") +
@@ -30,13 +30,13 @@ samplesdist_historgam <- ggplot(data = description_data, mapping = aes(x = latri
 #data cleaning / wrangling must have been carried regarding the article. 
 
 # Sample depth in cm
-samplesdepth_historgam <- ggplot(data = description_data, mapping = aes(x = latrine_number, y = sample_depth, color = site))  +
+samplesdepth_histogram <- ggplot(data = description_data, mapping = aes(x = latrine_number, y = sample_depth, color = site))  +
   geom_point(alpha = 0.8) +
   labs(x = "Latrine", y = "Samples depth [cm]", title ="Sample depth") +
   theme(legend.position = "none") +
   facet_wrap(~site)
 
 # Write data --------------------------------------------------------------
-ggsave("/cloud/project/results/samplesdist_historgam.png")
-ggsave("/cloud/project/results/samplesdepth_historgam.png")
+ggsave("/cloud/project/results/samplesdist_histogram.png")
+ggsave("/cloud/project/results/samplesdepth_histogram.png")
 
