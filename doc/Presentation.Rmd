@@ -84,7 +84,12 @@ source(file = "/cloud/project/R/04_analysis_visualisation_countries.R",local = k
 ```
 
 ```{r}
-ggplotly(p1)
+ggplotly(pH_boxplot)
+
+```
+___
+```{r}
+ggplotly(temp_boxplot)
 
 ```
 
@@ -94,19 +99,19 @@ ggplotly(p1)
 ```
 
 ```{r}
-ggplotly(pH_dens)
-ggplotly(temp_dens)
+#ggplotly(pH_dens)
+#ggplotly(temp_dens)
 
 ```
 
 ## Distribution of number of samples per latrine and per depth
 ```{r, include=FALSE}
-#source(file = "/cloud/project/R/04_analysis_sampledistributions.R",local = knitr::knit_global())
+source(file = "/cloud/project/R/04_analysis_sampledistributions.R",local = knitr::knit_global())
 ```
 
 ```{r}
 #ggplotly(depth_dist)
-cowplot::plot_grid(depth_dist, latrine_dist, align = "h", ncol = 2, rel_heights = c(0.50, 0.50))
+cowplot::plot_grid(samplesdist_histogram, samplesdepth_histogram, align = "h", ncol = 2, rel_heights = c(0.50, 0.50))
 #egg::ggarrange(depth_dist, latrine_dist, heights = c(0.50, 0.50))
 
 #grid.newpage()
@@ -138,29 +143,29 @@ cowplot::plot_grid(depth_dist, latrine_dist, align = "h", ncol = 2, rel_heights 
 ```
 ## Correlations: Vietnam
 ```{r, include=FALSE}
-source(file = "/cloud/project/R/04_analysis_heatmap_correlation.R",local = knitr::knit_global())
+source(file = "/cloud/project/R/04_analysis_correlations.R",local = knitr::knit_global())
 ```
 
 ```{r}
-vietnam_corr
+Vietnam_correlation
 ```
 
 ## Correlations: Tanzania
 ```{r}
-tanzania_corr
+Tanzania_correlation
 ```
 
 ## Principal Components Analysis
 ```{r, include=FALSE}
-source(file = "/cloud/project/R/04_analysis_ii.R",local = knitr::knit_global())
+source(file = "/cloud/project/R/04_analysis_pca.R",local = knitr::knit_global())
 ```
 
 ```{r}
-ggplotly(pca_arrow_points)
+ggplotly(pca_rotation)
 ```
 ---
 ```{r}
-ggplotly(pca_dist)
+ggplotly(pca_variance)
 ```
 
 
