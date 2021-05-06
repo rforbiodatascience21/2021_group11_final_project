@@ -1,14 +1,30 @@
 ### Visualisation of variables split on the two countries ###
+# Clear workspace ---------------------------------------------------------
+rm(list = ls())
+
+
+# Load libraries ----------------------------------------------------------
+library("tidyverse")
+
+
+# Define functions --------------------------------------------------------
+source(file = "/cloud/project/R/99_project_functions.R")
+
+
+# Load data ---------------------------------------------------------------
+my_data_clean_aug <- read_tsv(file = "/cloud/project/data/03_my_data_clean_aug.tsv")
 
 ## pH - in latrine ##
 # Boxplot
-my_data_clean_aug %>% 
+
+
+p1 <- my_data_clean_aug %>% 
   ggplot(aes(site, pH)) +
   geom_boxplot() +
   ggtitle("pH")
 
 # Density plot
-my_data_clean_aug %>% 
+p2 <- my_data_clean_aug %>% 
   ggplot(aes(pH)) +
   facet_wrap(vars(site)) +
   geom_density() +
@@ -74,5 +90,6 @@ my_data_clean_aug %>%
   facet_wrap(vars(site)) +
   geom_density() +
   ggtitle("NH4")
+
 
 

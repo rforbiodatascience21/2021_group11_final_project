@@ -1,32 +1,167 @@
 ---
 title: "Presentation"
-author: Group 11
+author: "Group 11: Freja Dahl Hede, Maika Jensen, Malene Nørregaard Nielsen\n, Sofie Rossen, Sofie Theisen Honore"
 date: Maj 11 / Maj 12, 2021
 output: ioslides_presentation
 ---
+<!-- Et slide består normalvis af en overskrift og to chunks
+## Overskrift på Slide, e.g. PCA
+1. Et slide hvor filen med output sources (benyt include=FALSE), OBS: skriv full path
+2. Et slide med output (bruger ggplotly i de fleste tilfælde
+-->
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+# Clear workspace ---------------------------------------------------------
+rm(list = ls())
+knitr::opts_chunk$set(echo = FALSE)
+
+# Load libraries ----------------------------------------------------------
+library(plotly)
+library(tidyverse)
+library(ggplot2)
+library(glue)
+library(cowplot)
+library(lubridate)
+library(egg)
+library(grid)
+library(DT)
+library(knitr)
+library(kableExtra)
 ```
-<!-- This an outcommented note -->
 
-<!-- Titles -->
-# This is a "section" title 
-<!-- Apart from the section in the beginning. Could be used as a "data wrangeling" title  -->
-## This is a slide-title 
-<!-- Will begin new slide -->
-### This is a slide-subtitle 
-This is regular text 
+```{r, include = FALSE}
+#### 1. Prepare Data for printing ####
+ENV_pitlatrine <- read_csv(file = "/cloud/project/data/_raw/ENV_pitlatrine.csv")
+SPE_pitlatrine <- read_csv(file = "/cloud/project/data/_raw/SPE_pitlatrine.csv")
+my_data_clean_aug <- read_tsv(file = "/cloud/project/data/03_my_data_clean_aug.tsv")
+my_data_clean_aug <- tibble(my_data_clean_aug)
 
-<!-- Another way to add new slide without a title: -->
+#### 2. Convert to interactive table using DT ####
+d <- my_data_clean_aug %>%
+  datatable() %>%
+  formatStyle(columns = colnames(.), fontSize = '10%')
+
+#d=datatable(my_data_clean_aug,width = '90%', options = list(scrollX = TRUE))
+
+
+#### 3. Convert to HTML widget using htmlwidgets ####
+#path <- paste("./dat.html", sep="")
+#saveWidget(as_widget(d), file = path)
+```
+
+# Introduction 
+# Materials & Methods
+## Raw data
+Slice of data
+```{r}
+ENV_pitlatrine %>%
+  slice_head(n = 6) %>%
+  kable("html") %>%
+  kable_styling(font_size = 12)
+
+SPE_pitlatrine %>%
+  select(1:10) %>%
+  slice_head(n = 6) %>%
+  kable("html") %>%
+  kable_styling(font_size = 12)
+```
+
+## Data Wrangling
+- Full join 
+```{r}
+my_data_clean_aug %>%
+  slice_head(n = 10) %>%
+  select(1:10) %>%
+  kable("html") %>%
+  kable_styling(font_size = 9)
+#d
+```
+
+# Results
+## Boxplot
+```{r, include=FALSE}
+source(file = "/cloud/project/R/04_analysis_visualisation_countries.R",local = knitr::knit_global())
+```
+
+```{r}
+ggplotly(p1)
+
+```
+
+## Something
+```{r, include=FALSE}
+#source(file = "/cloud/project/R/04_analysis_statisticaltests.R",local = knitr::knit_global())
+```
+
+```{r}
+ggplotly(pH_dens)
+ggplotly(temp_dens)
+
+```
+
+## Distribution of number of samples per latrine and per depth
+```{r, include=FALSE}
+#source(file = "/cloud/project/R/04_analysis_sampledistributions.R",local = knitr::knit_global())
+```
+
+```{r}
+#ggplotly(depth_dist)
+cowplot::plot_grid(depth_dist, latrine_dist, align = "h", ncol = 2, rel_heights = c(0.50, 0.50))
+#egg::ggarrange(depth_dist, latrine_dist, heights = c(0.50, 0.50))
+
+#grid.newpage()
+#grid.draw(rbind(ggplotGrob(depth_dist), ggplotGrob(latrine_dist), size = "last"))
+
+
+#subplot(depth_dist, latrine_dist, shareX = FALSE, heights = 0.8)
+#sub = subplot(depth_dist, latrine_dist, margin=0.05)
+#ggplotly(sub)
+```
+
+## Distribution of Temperature and pH of the samples
+```{r, include=FALSE}
+#source(file = "/cloud/project/R/04_analysis_statisticaltests.R",local = knitr::knit_global())
+```
+
+```{r}
+#ggplotly(depth_dist)
+#cowplot::plot_grid(temp_dens, pH_dens, align = "h", ncol = 2, rel_heights = c(0.50, 0.50))
+#egg::ggarrange(depth_dist, latrine_dist, heights = c(0.50, 0.50))
+
+#grid.newpage()
+#grid.draw(rbind(ggplotGrob(depth_dist), ggplotGrob(latrine_dist), size = "last"))
+
+
+#subplot(depth_dist, latrine_dist, shareX = FALSE, heights = 0.8)
+#sub = subplot(depth_dist, latrine_dist, margin=0.05)
+#ggplotly(sub)
+```
+## Correlations: Vietnam
+```{r, include=FALSE}
+source(file = "/cloud/project/R/04_analysis_heatmap_correlation.R",local = knitr::knit_global())
+```
+
+```{r}
+vietnam_corr
+```
+
+## Correlations: Tanzania
+```{r}
+tanzania_corr
+```
+
+## Principal Components Analysis
+```{r, include=FALSE}
+source(file = "/cloud/project/R/04_analysis_ii.R",local = knitr::knit_global())
+```
+
+```{r}
+ggplotly(pca_arrow_points)
+```
 ---
-This is a new slide 
-
-## This is a scatterplot with a figure caption
-```{r, cars, fig.cap="A scatterplot.", echo=FALSE}
-plot(cars)
+```{r}
+ggplotly(pca_dist)
 ```
 
 
-<!-- For help and more creative slides -->
-<!-- https://bookdown.org/yihui/rmarkdown/ioslides-presentation.html -->
+# Discussion
