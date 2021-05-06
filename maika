@@ -66,6 +66,9 @@ ggbiplot(pca_fit)
 ggbiplot(pca_fit, labels=my_data_clean_aug$Taxa)
 # see which are similar - have many of the same - hva clustered befoore?
 
+#LAV JITTERPLOT FOR AT SE HVOR MANGE DER ER OVENI HINANDEN
+# VÄR SIKKER PÅ HVAD DER SKER OG HVORFOR. VED HVAD VI SNAKKER OM OG HVORDAN MAN KAN TOLKE DET
+
 ggbiplot(pca_fit,ellipse=TRUE,  labels=my_data_clean_aug$Taxa, groups=my_data_clean_aug$site)
 ggbiplot(pca_fit,ellipse=TRUE, groups=my_data_clean_aug$site)
 # viet bacteria form distinct cluster top right.
