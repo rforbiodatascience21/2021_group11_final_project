@@ -42,5 +42,5 @@ pca_variance <- pca_fit %>%
 
 # Write data --------------------------------------------------------------
 #write_tsv(...)
-ggsave("/cloud/project/results/pca_rotation.png") # kald plot p1, full path
-ggsave("/cloud/project/results/pca_variance.png") # kald plot p1, full path
+ggsave("/cloud/project/results/pca_rotation.png") 
+ggsave("/cloud/project/results/pca_variance.png")
