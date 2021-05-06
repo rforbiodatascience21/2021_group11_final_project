@@ -18,13 +18,13 @@ my_data_clean_aug <- read_tsv(file = "/cloud/project/data/03_my_data_clean_aug.t
 # Boxplot
 
 
-p1 <- my_data_clean_aug %>% 
+my_data_clean_aug %>% 
   ggplot(aes(site, pH)) +
   geom_boxplot() +
   ggtitle("pH")
 
 # Density plot
-p2 <- my_data_clean_aug %>% 
+my_data_clean_aug %>% 
   ggplot(aes(pH)) +
   facet_wrap(vars(site)) +
   geom_density() +
