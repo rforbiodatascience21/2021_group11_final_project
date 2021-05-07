@@ -155,6 +155,16 @@ Vietnam_correlation
 Tanzania_correlation
 ```
 
+## Heatmap of OTU count 
+```{r, include=FALSE}
+source(file = "/cloud/project/R/04_analysis_heatmap.R",local = knitr::knit_global())
+```
+
+```{r}
+full_count_heatmap
+```
+
+
 ## Principal Components Analysis
 ```{r, include=FALSE}
 source(file = "/cloud/project/R/04_analysis_pca.R",local = knitr::knit_global())

@@ -20,8 +20,9 @@ my_data_clean_aug <- read_tsv(file = "/cloud/project/data/03_my_data_clean_aug.t
 # Mini heatmap for total count pr. sample
 total_count_heatmap <- 
   my_data_clean_aug %>%
+  mutate(Samples = as.character(Samples)) %>% 
   group_by(Samples) %>% 
-  summarise(Total_Sample = sum(OTU_Count)) %>% 
+  dplyr::summarise(Total_Sample = sum(OTU_Count)) %>% 
   ggplot(mapping = aes(x = Samples, y = 1, fill = Total_Sample)) +
   geom_tile() +
   scale_fill_gradientn(colours = c("white", "yellow", "green"), 
@@ -37,8 +38,7 @@ total_count_heatmap <-
 count_heatmap <- 
   my_data_clean_aug %>%
   group_by(Taxa, Samples) %>% 
-  summarise(Taxa,
-            count = sum(OTU_Count)) %>% 
+  dplyr::summarise(count = sum(OTU_Count)) %>% 
   ggplot(mapping = aes(x = Samples, y = Taxa, fill = count)) +
   geom_tile() +
   scale_fill_gradientn(colours = c("grey90", "white", "purple", "blue"), values = c(0, 0.000001, 0.2, 1)) +
@@ -48,7 +48,7 @@ count_heatmap <-
         plot.margin = margin(t = 0.1))
 
 # Gather in one plot
-count_heatmap <-
+full_count_heatmap <-
   (total_count_heatmap / count_heatmap) + 
   plot_layout(heights = c(1, 30)) +
   ggsave("/cloud/project/results/count_heatmap.png")
