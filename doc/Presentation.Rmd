@@ -1,6 +1,6 @@
 ---
 title: "Presentation"
-author: "Group 11: Freja Dahl Hede, Maika Jensen, Malene Nørregaard Nielsen\n, Sofie Rossen, Sofie Theisen Honore"
+author: "Group 11: Freja Dahl Hede, Maika Jensen, Malene Nørregaard Nielsen,<br> Sofie Rossen, Sofie Theisen Honore"
 date: Maj 11 / Maj 12, 2021
 output: ioslides_presentation
 ---
@@ -49,19 +49,25 @@ d <- my_data_clean_aug %>%
 #saveWidget(as_widget(d), file = path)
 ```
 
+<!-- Introduction -->
 # Introduction 
+
+
+<!-- Materials and methods-->
 # Materials & Methods
-## Raw data
-Slice of data
+
+## Extract of Raw Data
 ```{r}
 ENV_pitlatrine %>%
-  slice_head(n = 6) %>%
+  slice_head(n = 5) %>%
   kable("html") %>%
   kable_styling(font_size = 12)
 
+# Random extract of data. Seed is set to 7 to ensure non-0 rows
+set.seed(7)
 SPE_pitlatrine %>%
   select(1:10) %>%
-  slice_head(n = 6) %>%
+  slice_sample(n = 5) %>%
   kable("html") %>%
   kable_styling(font_size = 12)
 ```
@@ -70,11 +76,10 @@ SPE_pitlatrine %>%
 - Full join 
 ```{r}
 my_data_clean_aug %>%
-  slice_head(n = 10) %>%
+  slice_head(n = 6) %>%
   select(1:10) %>%
   kable("html") %>%
   kable_styling(font_size = 9)
-#d
 ```
 
 # Results
