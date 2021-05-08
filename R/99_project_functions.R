@@ -14,11 +14,29 @@ creating_bacterium_barplot <- function(bacterium, attribute){
     mutate(width = (Max - Min)/l)
   
   # Bar plot with normalized binwidth
-  p1 <- ggplot(data = bacterium_data, mapping = aes(x = eval(as.symbol(attribute)), y=OTU_Count, fill=site)) +
+  bacterium_attribute_barplot <- ggplot(data = bacterium_data, mapping = aes(x = eval(as.symbol(attribute)), y=OTU_Count, fill=site)) +
     geom_bar(stat="identity", position="identity", width = pull(binwidth,width), alpha = 0.5) +
     labs(x = attribute, y = "OTU_Count", title = bacterium) + 
     theme(legend.position = "bottom", legend.title = element_blank())
   
-  return(p1)
+  return(bacterium_attribute_barplot)
 }
+
+
+creating_attribute_violinplot <- function(attribute){
+  # This function creates a violinplot with the desired attribute 
+  # on the y-axis and site on the y-axis 
+  # The parameter must be inputted as a string.
+
+  attribute_violin <- my_data_clean_aug %>% 
+    ggplot(aes(x = site, y = eval(as.symbol(attribute)), fill = site)) +
+    geom_violin(alpha=0.7) +
+    geom_boxplot(width = 0.05, color = "grey35", alpha = 0.7, outlier.size = 0.5) +
+    labs(y = attribute, title = paste("Sample", attribute)) +
+    theme(legend.position = "none")
+
+  return(attribute_violin)
+}
+
+
 
