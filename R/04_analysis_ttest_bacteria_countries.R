@@ -15,21 +15,19 @@ my_data_clean_aug <- read_tsv(file = "/cloud/project/data/03_my_data_clean_aug.t
 
 
 # Wrangle data ------------------------------------------------------------
-# Do unpaired two-sided t-tests for each taxa
+# Do unpaired two-sided t-tests for each known taxa
 my_data_clean_aug_ttest <- my_data_clean_aug %>%
-  # Filter out Unknown taxa rows because we don't want to look at them in this analysis
-  filter(Taxa != "Unknown") %>%
+filter(Taxa != "Unclassified") %>%
   mutate(site = case_when(site == "Tanzania" ~ 0,
                           site == "Vietnam" ~ 1)) %>%
   select(Taxa, OTU_Count, site) %>%
   group_by(Taxa) %>%
-  # Do t-test on each taxa
   summarise(ttest = list(t.test(OTU_Count ~ site))) %>%
   mutate(ttest = map(ttest, tidy)) %>%
   unnest(cols = c(ttest)) %>%
   select(Taxa, estimate, p.value, conf.low,conf.high) %>%
-  mutate(identified_as = case_when(p.value < 0.05 ~ "significant",
-                                   p.value >= 0.05 ~ "not significant"))
+  mutate(identified_as = case_when(p.value < 0.05 ~ "Significant",
+                                   p.value >= 0.05 ~ "Not significant"))
 
 
 # Calculate negative log10 of p-value for Manhattan plot
@@ -48,10 +46,10 @@ significant_bacteria_countries <- my_data_clean_aug_ttest %>%
 Manhattan_plot <- my_data_clean_aug_ttest_Manhattan %>%
   ggplot(mapping = aes(x = fct_reorder(Taxa, neg_log10_p, .desc = TRUE), y = neg_log10_p, color = identified_as)) + 
   geom_point() + 
-  theme_classic() + 
   theme(legend.position = "bottom",
-        axis.text.x = element_text(angle = 45, hjust = 1)) + 
-  labs(y = "Minus log10(p)", x = "Taxa") + 
+        axis.text.x = element_text(angle = 65, hjust = 1)) + 
+  labs(y = "Minus log10(p)", x = "Taxa", color = "Identified as") + 
+  scale_color_manual(values = c("azure4", "chartreuse3")) +
   geom_hline(yintercept = -log10(0.05), linetype = "longdash") 
 
 
@@ -60,10 +58,10 @@ Error_bar_plot <- my_data_clean_aug_ttest %>%
   ggplot(mapping = aes(x = estimate, y = fct_reorder(Taxa,estimate, .desc = TRUE), color = identified_as)) + 
   geom_point() + 
   geom_errorbar(width = .1, aes(xmin = conf.low, xmax = conf.high)) + 
-  theme_classic() + 
   theme(legend.position = "bottom") + 
   geom_vline(xintercept = 0, linetype = "longdash") +
-  labs(x = "estimate", y = "")
+  labs(x = "Estimate", y = "", color = "Identified as") +
+  scale_color_manual(values = c("azure4", "chartreuse3"))
 
 
 # Zoom in on error bar plot
@@ -71,10 +69,10 @@ Error_bar_plot_zoom <- my_data_clean_aug_ttest %>%
   ggplot(mapping = aes(x = estimate, y = fct_reorder(Taxa,estimate, .desc = TRUE), color = identified_as)) + 
   geom_point() + 
   geom_errorbar(width = .1, aes(xmin = conf.low, xmax = conf.high)) + 
-  theme_classic() + 
   theme(legend.position = "bottom") + 
   geom_vline(xintercept = 0, linetype = "longdash") +
-  labs(x = "estimate", y = "") +
+  labs(x = "Estimate", y = "", color = "Identified as") +
+  scale_color_manual(values = c("azure4", "chartreuse3")) +
   xlim(-75,5)
 
 
@@ -84,20 +82,13 @@ write_tsv(x = significant_bacteria_countries,
           file = "/cloud/project/results/significant_bacteria.tsv")
 
 # Export Manhattan plot
-ggsave("/cloud/project/results/Manhattan_plot.png")
+ggsave(file = "/cloud/project/results/Manhattan_plot.png", 
+       plot = Manhattan_plot)
 
 # Export error bar plots
-ggsave("/cloud/project/results/Error_bar_plot.png")
-ggsave("/cloud/project/results/Error_bar_plot_zoom.png")
-
-
-
-
-
-
-
-
-
-
+ggsave(file = "/cloud/project/results/Error_bar_plot.png", 
+       plot = Error_bar_plot)
+ggsave(file = "/cloud/project/results/Error_bar_plot_zoom.png",
+       plot = Error_bar_plot_zoom)
 
 
