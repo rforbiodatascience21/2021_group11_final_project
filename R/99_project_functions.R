@@ -38,5 +38,18 @@ creating_attribute_violinplot <- function(attribute){
   return(attribute_violin)
 }
 
+creating_correlation_pointplot <- function(attribute1, attribute2){
+  # This function creates a pointplot with the desired two attributes 
+  # The parameters must be inputted as a strings.
+ 
+  correlation_pointplot <- my_data_clean_aug %>%
+    ggplot(aes(x = eval(as.symbol(attribute1)), y = eval(as.symbol(attribute2)))) +
+    geom_point(size = 3, alpha=0.7, color="darkolivegreen2") +
+    labs(title=paste("Point plot of", attribute1, "vs.", attribute2)) +
+    theme(legend.title = element_blank())
+    
+    return(correlation_pointplot)
+}
+
 
 
