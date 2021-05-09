@@ -38,29 +38,35 @@ datapc_PC2 <- datapc %>%
 
 mult <- min(
   (max(data_PC2) - min(data_PC2)/(max(datapc_PC2)-min(datapc_PC2))),
-  (max(data_PC1) - min(data_PC1)/(max(datapc_PC1)-min(datapc_PC1)))
-)
+  (max(data_PC1) - min(data_PC1)/(max(datapc_PC1)-min(datapc_PC1))))
 
 datapc <- transform(datapc,
                     v1 = 1.3 * mult * (get("PC1")),
-                    v2 = 1.3 * mult * (get("PC2"))
-)
+                    v2 = 1.3 * mult * (get("PC2")))
 
 # Visualise data ----------------------------------------------------------
 
 # Plot in PC coordinates
-pca_plot <- ggplot(pca, aes(x=.fittedPC1, y=.fittedPC2,color = site)) + 
+pca_plot <- ggplot(pca, 
+                   aes(x=.fittedPC1, y=.fittedPC2,color = site)) + 
   geom_point(size = 1.3) + 
   coord_equal() + 
-  geom_text(data=datapc, aes(x=v1, y=v2, label=varnames), size = 4, vjust=-.1, hjust=1.2, color="black") + 
-  geom_segment(data=datapc, aes(x=0, y=0, xend=v1, yend=v2), 
-               arrow=arrow(length=unit(0.2,"cm")), alpha=0.75, color="black") + 
+  geom_text(data=datapc, 
+            aes(x=v1, y=v2, label=varnames), 
+            size = 4, 
+            vjust=-.4, 
+            hjust=1, 
+            color="black") + 
+  geom_segment(data=datapc, 
+               aes(x=0, y=0, xend=v1, yend=v2), 
+               arrow=arrow(length=unit(0.2,"cm")), 
+               alpha=0.75, 
+               color="black") + 
   xlab("Principal component 1") +
   ylab("Principal component 2") +
   scale_color_manual(
     name = "Country",
-    values = c(Tanzania = "#6495ed", Vietnam = "#b22222")
-  ) 
+    values = c(Tanzania = "#6495ed", Vietnam = "#b22222")) 
 
 # Variance explained by each PC
 pca_variance_plot <- pca_fit %>%
@@ -70,8 +76,7 @@ pca_variance_plot <- pca_fit %>%
   scale_x_continuous(breaks = 1:13) +
   scale_y_continuous(
     labels = scales::percent_format(),
-    expand = expansion(mult = c(0, 0.01))
-  ) +
+    expand = expansion(mult = c(0, 0.01))) +
   ylab("Percentage of variance explained") + 
   xlab("Principal component")
 

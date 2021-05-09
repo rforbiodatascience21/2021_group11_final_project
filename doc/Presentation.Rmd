@@ -132,6 +132,15 @@ knitr::include_graphics('/cloud/project/results/heatmap_with_totalbar.png')
 ```
 
 ## PCA 
+```{r, out.width='100%'}
+knitr::include_graphics('/cloud/project/results/pca_plot.png')
+```
+
+---
+
+```{r, out.width='100%'}
+knitr::include_graphics('/cloud/project/results/pca_variance_plot.png')
+```
 
 ## KMeans 
 
