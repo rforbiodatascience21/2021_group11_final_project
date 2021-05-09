@@ -82,7 +82,7 @@ my_data_raw_counts %>%
 ```
 
 ## Meta data
-```{r}
+```{r, out.width='90%'}
 # Extraxt of taxonomy data
 my_data_raw_taxonomy %>%
   select(1:7) %>%
@@ -112,43 +112,72 @@ my_data_clean_aug %>%
 ## Summary statistics
 
 ## Violin plots
+```{r, out.width='90%'}
+knitr::include_graphics('/cloud/project/results/pHandTemp_violinplot.png')
+```
 
 ## Correlations of meta data
+```{r, out.width='90%'}
+knitr::include_graphics('/cloud/project/results/correlation_attributest.png')
+```
 
 ## Heatmap with hierarchical clustering
 ```{r, out.width='100%'}
 knitr::include_graphics('/cloud/project/results/heatmap_with_dendrogram.png')
 ```
 
-
 ## Heatmap with total bar
 ```{r, out.width='100%'}
 knitr::include_graphics('/cloud/project/results/heatmap_with_totalbar.png')
 ```
+
 ## PCA 
 
 ## KMeans 
 
 ## T-test
-```{r, out.width='100%'}
+```{r, out.width='90%'}
 knitr::include_graphics('/cloud/project/results/Manhattan_plot.png')
 ```
+
 ---
+
 ```{r, out.width='100%'}
 knitr::include_graphics('/cloud/project/results/Error_bar_plot.png')
 ```
+
 ---
+
 ```{r, out.width='100%'}
 knitr::include_graphics('/cloud/project/results/Error_bar_plot_zoom.png')
 ```
 
 ## Sample distributions (Tanzania and Vietnam compared)
 
-## Correlations between significant bacteria
+---
 
-## Correlations between significant bacteria and meta data
+### Correlations between significant bacteria
+```{r, out.width='90%'}
+knitr::include_graphics('/cloud/project/results/correlation_bacteria.png')
+```
+
+---
+
+### Correlations between significant bacteria and meta data
+```{r, out.width='90%'}
+knitr::include_graphics('/cloud/project/results/correlation_attributes_bacteria.png')
+```
 
 ## Distributions of significant bacteria based on meta data
+- Tror meningen er at vi gerne vil trække nogle spændende bakterier ud
+- Bacilli er bare et eksempel - Vi skal lige snakke om hvad vi vil
+
+---
+
+```{r, out.width='90%'}
+knitr::include_graphics('/cloud/project/results/bacilli_pH_barplot.png')
+```
+
 
 # Discussion
 
