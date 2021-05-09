@@ -42,8 +42,8 @@ mult <- min(
 )
 
 datapc <- transform(datapc,
-                    v1 = 2 * mult * (get("PC1")),
-                    v2 = 2* mult * (get("PC2"))
+                    v1 = 1.3 * mult * (get("PC1")),
+                    v2 = 1.3 * mult * (get("PC2"))
 )
 
 # Visualise data ----------------------------------------------------------
