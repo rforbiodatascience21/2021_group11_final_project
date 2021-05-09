@@ -116,9 +116,15 @@ my_data_clean_aug %>%
 ## Correlations of meta data
 
 ## Heatmap with hierarchical clustering
+```{r, out.width='100%'}
+knitr::include_graphics('/cloud/project/results/heatmap_with_dendrogram.png')
+```
+
 
 ## Heatmap with total bar
-
+```{r, out.width='100%'}
+knitr::include_graphics('/cloud/project/results/heatmap_with_totalbar.png')
+```
 ## PCA 
 
 ## KMeans 
