@@ -18,14 +18,14 @@ my_data_clean_aug <- read_tsv(file = "/cloud/project/data/03_my_data_clean_aug.t
 Vietnam_correlation <- 
   my_data_clean_aug %>% 
   filter(site == "Vietnam") %>% 
-  select(-"Taxa", -"Samples", -"Sample", -"site", -"OTU_Count") %>% 
+  select(-"Taxa", -"Samples", -"site", -"OTU_Count") %>% 
   ggpairs(title = "Vietnam") 
 
 # Plot of correlations, Tanzania
 Tanzania_correlation <- 
   my_data_clean_aug %>% 
   filter(site == "Tanzania") %>% 
-  select(-"Taxa", -"Samples", -"Sample", -"site", -"OTU_Count") %>% 
+  select(-"Taxa", -"Samples", -"site", -"OTU_Count") %>% 
   ggpairs(title = "Tanzania")
 
 # Write data ----------------------------------------------------------
