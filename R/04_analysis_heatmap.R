@@ -3,10 +3,12 @@ rm(list = ls())
 
 
 # Load libraries ----------------------------------------------------------
-library("tidyverse")
-library("GGally")
 library("patchwork")
-
+#install.packages("ggdendro")
+library("ggdendro")
+#install.packages("reshape2")
+library("reshape2")
+library("tidyverse")
 
 # Define functions --------------------------------------------------------
 source(file = "/cloud/project/R/99_project_functions.R")
@@ -15,45 +17,125 @@ source(file = "/cloud/project/R/99_project_functions.R")
 # Load data ---------------------------------------------------------------
 my_data_clean_aug <- read_tsv(file = "/cloud/project/data/03_my_data_clean_aug.tsv")
 
+
+
+# Wrangle data ----------------------------------------------------------
+
+# Make wide format for matrix and 
+my_data_clean_aug_wide <-   
+  my_data_clean_aug %>% 
+  select(Samples, Taxa, OTU_Count) %>% 
+  pivot_wider(names_from = Samples, values_from = OTU_Count) 
+
+# Convert to matrix for dendrogram
+OTU_matrix <- 
+  my_data_clean_aug_wide %>% 
+  column_to_rownames(var="Taxa") %>% 
+  as.matrix() %>% 
+  scale() 
+
+# Create dendrogram
+taxa_dendro <- as.dendrogram(hclust(d = dist(x = OTU_matrix)))
+
+
+# Reorder original data (for heatmap) corresponding to dendrogram
+dendro_order <- labels(taxa_dendro) #order.dendrogram(taxa_dendro)
+#taxa_order <- arrange(my_data_clean_aug_wide, Taxa, dendro_order) %>% pull(Taxa) # NB: Need to pull to work as levels
+#taxa_order <- my_data_clean_aug_wide %>% pull(Taxa) 
+#factor(taxa_order, levels = dendro_order)
+
+my_data_clean_aug_reordered <- 
+  my_data_clean_aug %>% 
+  mutate(Taxa = factor(x = Taxa, 
+                       levels = dendro_order,
+                       ordered = TRUE))
+
 # Visualise data ----------------------------------------------------------
 
-# Mini heatmap for total count pr. sample
+# Dendrogram plot
+dendro_plot <- ggdendrogram(data = taxa_dendro, rotate = TRUE)  + 
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        plot.margin = margin(t = -10, r = 0.1, l = 0.1)) +
+  scale_x_continuous(expand = c(0.01,0.01))
+
+
+# Small heatmap for total counts per sample
 total_count_heatmap <- 
   my_data_clean_aug %>%
   mutate(Samples = as.character(Samples)) %>% 
   group_by(Samples) %>% 
   dplyr::summarise(Total_Sample = sum(OTU_Count)) %>% 
   ggplot(mapping = aes(x = Samples, y = 1, fill = Total_Sample)) +
-  geom_tile() +
+  geom_tile(color = "gray") +
   scale_fill_gradientn(colours = c("white", "yellow", "green"), 
                        values = c(0, 0.1, 0.4, 1), 
                        breaks = waiver(), n.breaks = 7, name = "Total") +
   theme(axis.text.x=element_blank(), axis.ticks.x=element_blank(), 
         axis.text.y=element_blank(), axis.ticks.y=element_blank(), 
-        legend.direction = "horizontal", legend.text = element_text(angle = 45, size = 8),
-        plot.margin = margin(t = 0.1, b = 0.1)) +
-  ylab("") + xlab("") 
+        legend.title = element_text(size = 8),
+        plot.margin = margin(t = -10),
+        #plot.margin = margin(t = 1, b = -2, r = 50, l = 100),
+        legend.position = "left") +
+  ylab("") + xlab("") +
+  guides(color = FALSE)
 
 # Heatmap for OTU counts for samples vs. Taxa
 count_heatmap <- 
-  my_data_clean_aug %>%
+  my_data_clean_aug_reordered %>%
   group_by(Taxa, Samples) %>% 
   dplyr::summarise(count = sum(OTU_Count)) %>% 
   ggplot(mapping = aes(x = Samples, y = Taxa, fill = count)) +
-  geom_tile() +
-  scale_fill_gradientn(colours = c("grey90", "white", "purple", "blue"), values = c(0, 0.000001, 0.2, 1)) +
-  theme(axis.text.x = element_text(size = 3, angle = 45),
-        axis.text.y = element_text(size = 5),
-        legend.key.size = unit(0.3, "cm"),
-        plot.margin = margin(t = 0.1))
+  geom_tile(color = "gray") +
+  scale_fill_gradientn(colours = c("grey90", "white", "purple", "blue"), 
+                       values = c(0, 0.000001, 0.2, 1),
+                       name = "OTU Count") +
+  theme(axis.text.x = element_text(size = 6, angle = 90),
+        axis.text.y = element_text(size = 8),
+        plot.margin = margin(t = -10),
+        legend.position = "left") +
+  guides(color = FALSE) 
 
-# Gather in one plot
+
+## Collect plots
+
+# Heatmap with dendrogram
+heatmap_dendro <- 
+  plot_grid(count_heatmap, dendro_plot, 
+          align = "h", 
+          axis = "tb", 
+          rel_widths = c(3,1)) +
+  plot_annotation(
+    title = 'OTU Count of different bacteria pr. sample',
+    subtitle = 'Dendogram for hierarchical clustering',
+  )
+
+# Heatmap with total bar
 full_count_heatmap <-
   (total_count_heatmap / count_heatmap) + 
-  plot_layout(heights = c(1, 30)) +
-  ggsave("/cloud/project/results/count_heatmap.png")
-  
+  plot_layout(heights = c(1,40), 
+              guides = "collect") +
+  plot_annotation(
+    title = 'OTU Count of different bacteria pr. sample',
+    subtitle = 'Total OTU Count per sample',
+  )
 
 
 
+# Write data ----------------------------------------------------------
+
+ggsave("/cloud/project/results/heatmap_with_dendrogram.png", 
+       width = 10, 
+       height = 5, 
+       dpi = 150,
+       units = "in",
+       plot = heatmap_dendro)
+
+ggsave("/cloud/project/results/heatmap_with_totalbar.png", 
+       width = 8, 
+       height = 5, 
+       dpi = 150,
+       units = "in",
+       plot = full_count_heatmap)
 
