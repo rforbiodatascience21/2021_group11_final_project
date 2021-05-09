@@ -16,4 +16,3 @@ bacilli_pH_barplot <- creating_bacterium_barplot(bacterium = "Bacilli", attribut
 # Write data --------------------------------------------------------------
 ggsave("/cloud/project/results/bacilli_pH_barplot.png")
 
-
