@@ -3,9 +3,9 @@
 rm(list = ls())
 
 # Load libraries ----------------------------------------------------------
-library("tidyverse")
 library("broom")  
 library("purrr")
+library("tidyverse")
 
 # Define functions --------------------------------------------------------
 source(file = "/cloud/project/R/99_project_functions.R")
@@ -37,8 +37,8 @@ my_data_clean_aug_ttest_Manhattan <- my_data_clean_aug_ttest %>%
 
 # Export list of bacteria that are significantly more in one country than in the other
 significant_bacteria_countries <- my_data_clean_aug_ttest %>%
-  filter(identified_as == "significant") %>%
-  select(Taxa)
+  filter(identified_as == "Significant") %>%
+  select(Taxa,p.value)
 
 
 # Visualise data -------------------------------------------
