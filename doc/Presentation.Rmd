@@ -65,8 +65,8 @@ my_data_clean_aug <- read_tsv(file = "/cloud/project/data/03_my_data_clean_aug.t
 
 <!-- Introduction -->
 # Introduction 
-- Explorative data analysis of bacterial latrine data from Tanzania and Vietnam
 
+## Explorative data analysis of bacterial latrine data from Tanzania and Vietnam
 Torondel, B. et al., (2016), "Assessment of the influence of intrinsic environmental and geographical factors on the bacterial ecology of pit latrines", Microbial Technology
 
 <!-- Important Communicable disease -->
@@ -77,14 +77,14 @@ Torondel, B. et al., (2016), "Assessment of the influence of intrinsic environme
 
 ## Data 
 3 sets of raw data
-- Abundance data with count per OTU cluster per Sample
+- Abundance data with count per OTU cluster per sample
 - Taxonomy data per OTU cluster
 - Environmental metadata per sample
 
 ## Extract of Raw Data
 ```{r}
 # Random extract of data. Seed is set to 7 to ensure non-0 rows
-set.seed(7)
+set.seed(4)
 my_data_raw_counts %>%
   select(1:10) %>%
   slice_sample(n = 10) %>%
@@ -92,11 +92,12 @@ my_data_raw_counts %>%
   kable_styling(font_size = 12)
 ```
 
-## Reference data & Metadata
+## Reference Data & Metadata
 ```{r, out.width='90%'}
+set.seed(11)
 # Extraxt of taxonomy data
 my_data_raw_taxonomy %>%
-  select(1:7) %>%
+  select(1:6) %>%
   slice_sample(n = 5) %>%
   kable("html") %>%
   kable_styling(font_size = 12)
@@ -107,28 +108,68 @@ my_data_raw_ENV %>%
   kable("html") %>%
   kable_styling(font_size = 12)
 ```
+
 ## Graphical Representation of Wrangling Process
 <!-- Indsæt figurer her -->
-
 
 ## Clean and Augmented Data
 ```{r}
 my_data_clean_aug %>%
-  select(Samples, Taxa, site, everything()) %>%
-  slice_head(n = 6) %>%
+  select(Samples, Class, site, everything()) %>%
+  slice_head(n = 10) %>%
   select(1:10) %>%
   kable("html") %>%
   kable_styling(font_size = 9)
 ```
 
 # Results
-## Summary Statistics
+## Summary of Data
+```{r, include = FALSE}
+# Extract information from data
+number_bacteria <- my_data_clean_aug %>%
+  distinct(Class) %>%
+  nrow()
+
+number_countries <- my_data_clean_aug %>%
+  distinct(site) %>%
+  nrow()
+
+number_samples <- my_data_clean_aug %>%
+  distinct(Samples) %>%
+  nrow()
+
+number_samples_Tanzania <- my_data_clean_aug %>%
+  filter(site == "Tanzania") %>%
+  distinct(Samples) %>%
+  nrow()
+
+number_samples_Vietnam <- my_data_clean_aug %>%
+  filter(site == "Vietnam") %>%
+  distinct(Samples) %>%
+  nrow()
+
+max_OTU <- my_data_clean_aug %>%
+  summarise(max(OTU_Count)) %>% 
+  first()
+
+min_OTU <- my_data_clean_aug %>%
+  summarise(min(OTU_Count)) %>% 
+  first()
+```
+- Number of bacteria classes: `r number_bacteria` (Including Unclassified)
+- Number of sites: `r number_countries`
+- Number of samples: `r number_samples`
+    - Tanzania: `r number_samples_Tanzania`
+    - Vietnam: `r number_samples_Vietnam`
+- OTU Count:
+    - Maximum in one sample: `r format(max_OTU, digits = 5)`
+    - Minimum in one sample: `r format(min_OTU, digits = 5)`
 
 
 ## Initial Exploratory Analysis
 ```{r, out.width='90%'}
 knitr::include_graphics(
-  path = '/cloud/project/results/pHandTemp_violinplot.png')
+  path = '/cloud/project/results/TempCarboNH4_violinplot.png')
 ```
 
 ## Initial Exploratory Analysis
@@ -180,33 +221,23 @@ knitr::include_graphics(
   path = '/cloud/project/results/Manhattan_plot.png')
 ```
 
----
-
+## Sample Distributions (Tanzania and Vietnam compared)
 ```{r, out.width='100%'}
 knitr::include_graphics(
-  path = '/cloud/project/results/Error_bar_plot_zoom.png')
+  path = '/cloud/project/results/taxa_boxplots.png')
 ```
 
-## Sample distributions (Tanzania and Vietnam compared)
-
-
-### Correlations between Environmental Features and Bacteria where OTU Count Differ Significantly between Countries 
+## Correlations Between Environmental Features and Bacteria Where OTU Count Differ Significantly Between Countries 
 ```{r, out.width='90%'}
 knitr::include_graphics(
   path = '/cloud/project/results/correlation_attributes_bacteria.png')
 ```
 
-## Distributions of significant bacteria based on meta data
-- Tror meningen er at vi gerne vil trække nogle spændende bakterier ud
-- Bacilli er bare et eksempel - Vi skal lige snakke om hvad vi vil
-
----
-
+## Distributions of Environmental Features for Bacteria Where OTU Count Differ Significantly Between Countries
 ```{r, out.width='90%'}
 knitr::include_graphics(
   path = '/cloud/project/results/bacilli_pH_barplot.png')
 ```
-
 
 # Discussion
 
