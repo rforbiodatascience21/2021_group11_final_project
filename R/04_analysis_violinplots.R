@@ -3,6 +3,7 @@ rm(list = ls())
 
 # Load libraries ----------------------------------------------------------
 library("tidyverse")
+library("patchwork")
 
 # Define functions --------------------------------------------------------
 source(file = "/cloud/project/R/99_project_functions.R")
@@ -22,7 +23,7 @@ TempCarboNH4pH_violinplot <-
   creating_attribute_violinplot(data = my_data_clean_aug, 
                                 attribute = "NH4") + 
   creating_attribute_violinplot(data = my_data_clean_aug, 
-                                attribute = "pH")
+                                attribute = "pH") +
   plot_annotation(
     title = 'Environmental Features In the Two Countries')
 
