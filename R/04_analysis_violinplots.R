@@ -22,4 +22,8 @@ TempCarboNH4_violinplot <-  creating_attribute_violinplot("Temp") +
 
 # Write data --------------------------------------------------------------
 ggsave(file = "/cloud/project/results/TempCarboNH4_violinplot.png", 
+       width = 10, 
+       height = 6, 
+       dpi = 150,
+       units = "in",
        plot = TempCarboNH4_violinplot)

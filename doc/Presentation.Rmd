@@ -72,7 +72,7 @@ Torondel, B. et al., (2016), "Assessment of the influence of intrinsic environme
 <!-- Important Communicable disease -->
 
 
-<!-- Materials and methods-->
+<!-- Materials-->
 # Materials & Methods
 
 ## Data 
@@ -109,6 +109,7 @@ my_data_raw_ENV %>%
   kable_styling(font_size = 12)
 ```
 
+
 ## Graphical Representation of Wrangling Process
 <!-- Indsæt figurer her -->
 
@@ -121,6 +122,9 @@ my_data_clean_aug %>%
   kable("html") %>%
   kable_styling(font_size = 9)
 ```
+
+## Graphical Representation of Data Flow
+<!-- Indsæt figurer her -->
 
 # Results
 ## Summary of Data
@@ -167,13 +171,13 @@ min_OTU <- my_data_clean_aug %>%
 
 
 ## Initial Exploratory Analysis
-```{r, out.width='90%'}
+```{r, out.width='100%'}
 knitr::include_graphics(
   path = '/cloud/project/results/TempCarboNH4_violinplot.png')
 ```
 
 ## Initial Exploratory Analysis
-```{r, out.width='90%'}
+```{r, out.width='100%'}
 knitr::include_graphics(
   path = '/cloud/project/results/correlation_attributest.png')
 ```
@@ -203,38 +207,42 @@ knitr::include_graphics(
   path = '/cloud/project/results/pca_variance_plot.png')
 ```
 
-## KMeans 
+## KMeans Analysis
 ```{r, out.width='100%'}
 knitr::include_graphics(
   path = '/cloud/project/results/elbowplot.png')
 ```
 
-## KMeans 
+## KMeans Analysis
 ```{r, out.width='100%'}
 knitr::include_graphics(
   path = '/cloud/project/results/clust_4_pca.png')
 ```
 
-## T-test of Difference in OTU Count Between Countries
+## Difference of Bacteria Abundance between Countries
 ```{r, out.width='90%'}
 knitr::include_graphics(
   path = '/cloud/project/results/Manhattan_plot.png')
 ```
 
-## Sample Distributions (Tanzania and Vietnam compared)
+## Difference of Bacteria Abundance between Countries
 ```{r, out.width='100%'}
 knitr::include_graphics(
-  path = '/cloud/project/results/taxa_boxplots.png')
+  path = '/cloud/project/results/class_boxplots.png')
 ```
 
-## Correlations Between Environmental Features and Bacteria Where OTU Count Differ Significantly Between Countries 
-```{r, out.width='90%'}
+## Difference of Bacteria Abundance between Countries
+<!--Distributions of Environmental Features for Bacteria <br>
+Where OTU Count Differ Significantly Between Countries-->
+```{r, out.width='100%'}
 knitr::include_graphics(
   path = '/cloud/project/results/correlation_attributes_bacteria.png')
 ```
 
-## Distributions of Environmental Features for Bacteria Where OTU Count Differ Significantly Between Countries
-```{r, out.width='90%'}
+## Difference of Bacteria Abundance between Countries
+<!--Distributions of Environmental Features for Bacteria <br>
+Where OTU Count Differ Significantly Between Countries-->
+```{r, out.width='100%'}
 knitr::include_graphics(
   path = '/cloud/project/results/bacilli_pH_barplot.png')
 ```
