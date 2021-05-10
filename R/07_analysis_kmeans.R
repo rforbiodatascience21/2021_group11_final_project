@@ -10,7 +10,7 @@ library("scales")
 
 
 # Define functions --------------------------------------------------------
-source(file = "/cloud/project/R/04_analysis_pca.R")
+source(file = "/cloud/project/R/06_analysis_pca.R")
 source(file = "/cloud/project/R/99_project_functions.R")
 
 
@@ -89,6 +89,20 @@ clust_4_pca_plot <- my_cluster %>%
   labs(color='Cluster no.')
 
 # Write data --------------------------------------------------------------
-ggsave(file ="/cloud/project/results/elbowplot.png", plot = elbowplot)
-ggsave(file ="/cloud/project/results/clust_1_to_9.png", plot = clust_1_9_plot)
-ggsave(file ="/cloud/project/results/clust_4_pca.png", plot = clust_4_pca_plot)
+ggsave(file ="/cloud/project/results/elbowplot.png", width = 10, 
+       height = 6, 
+       dpi = 150,
+       units = "in",
+       plot = elbowplot)
+ggsave(file ="/cloud/project/results/clust_1_to_9.png",
+       width = 10, 
+       height = 6, 
+       dpi = 150,
+       units = "in",
+       plot = clust_1_9_plot)
+ggsave(file ="/cloud/project/results/clust_4_pca.png", 
+       width = 10, 
+       height = 6, 
+       dpi = 150,
+       units = "in",
+       plot = clust_4_pca_plot)

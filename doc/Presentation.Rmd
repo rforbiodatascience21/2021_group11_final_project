@@ -244,36 +244,31 @@ knitr::include_graphics(
 Where OTU Count Differ Significantly Between Countries-->
 ```{r, out.width='100%'}
 knitr::include_graphics(
-  path = '/cloud/project/results/bacilli_pH_barplot.png')
+  path = '/cloud/project/results/gammaproteobacteria_pH_barplot.png')
 ```
 
+## Difference of Bacteria Abundance between Countries
+<!--Distributions of Environmental Features for Bacteria <br>
+Where OTU Count Differ Significantly Between Countries-->
+```{r, out.width='100%'}
+knitr::include_graphics(
+  path = '/cloud/project/results/gammaproteobacteria_Temp_barplot.png')
+```
+
+## Difference of Bacteria Abundance between Countries
+<!--Distributions of Environmental Features for Bacteria <br>
+Where OTU Count Differ Significantly Between Countries-->
+```{r, out.width='100%'}
+knitr::include_graphics(
+  path = '/cloud/project/results/gammaproteobacteria_Carbo_barplot.png')
+```
+
+
+## Difference of Bacteria Abundance between Countries
+<!--Distributions of Environmental Features for Bacteria <br>
+Where OTU Count Differ Significantly Between Countries-->
+```{r, out.width='100%'}
+knitr::include_graphics(
+  path = '/cloud/project/results/gammaproteobacteria_NH4_barplot.png')
+```
 # Discussion
-
-
-
-
-
-
-
-
-
-
-# Noget gammelt, jeg ikke tør slette (hvis vi skal bruge noget med plotly senere)
-## Distribution of Temperature and pH of the samples
-```{r, include=FALSE}
-#source(file = "/cloud/project/R/04_analysis_statisticaltests.R",local = knitr::knit_global())
-```
-
-```{r}
-#ggplotly(depth_dist)
-#cowplot::plot_grid(temp_dens, pH_dens, align = "h", ncol = 2, rel_heights = c(0.50, 0.50))
-#egg::ggarrange(depth_dist, latrine_dist, heights = c(0.50, 0.50))
-
-#grid.newpage()
-#grid.draw(rbind(ggplotGrob(depth_dist), ggplotGrob(latrine_dist), size = "last"))
-
-
-#subplot(depth_dist, latrine_dist, shareX = FALSE, heights = 0.8)
-#sub = subplot(depth_dist, latrine_dist, margin=0.05)
-#ggplotly(sub)
-```
