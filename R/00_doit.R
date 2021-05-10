@@ -9,7 +9,7 @@ source(file = "/cloud/project/R/04_analysis_heatmap.R")
 source(file = "/cloud/project/R/04_analysis_pca.R")
 source(file = "/cloud/project/R/04_analysis_ttest_bacteria_countries.R")
 source(file = "/cloud/project/R/04_analysis_bacteirum_analysis.R")
-source(file = "/cloud/project/R/04_kmeans.R")
+source(file = "/cloud/project/R/04_analysis_kmeans.R")
 source(file = "/cloud/project/R/04_analysis_taxa_boxplots.R")
 
 # Knit presentation
