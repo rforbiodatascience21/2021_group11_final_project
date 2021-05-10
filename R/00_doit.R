@@ -1,8 +1,11 @@
 # Run all scripts ---------------------------------------------------------
 rm(list = ls())
+# Make directory for results
+dir.create("/cloud/project/results", showWarnings = FALSE)
 source(file = "/cloud/project/R/01_load.R")
 source(file = "/cloud/project/R/02_clean.R")
 source(file = "/cloud/project/R/03_augment.R")
+Sys.sleep(time = 3)
 source(file = "/cloud/project/R/04_analysis_violinplots.R")
 source(file = "/cloud/project/R/05_analysis_heatmap.R")
 source(file = "/cloud/project/R/06_analysis_pca.R")
@@ -13,4 +16,4 @@ source(file = "/cloud/project/R/10_analysis_class_boxplots_countries.R")
 source(file = "/cloud/project/R/11_analysis_bacterium.R")
 
 # Knit presentation
-rmarkdown::render("/cloud/project/doc/Presentation.Rmd")
+rmarkdown::render(input = "/cloud/project/doc/Presentation.Rmd")

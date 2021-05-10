@@ -46,7 +46,6 @@ datapc <- transform(datapc,
   v2 = 1.3 * mult * (get("PC2")))
 
 # Visualise data ----------------------------------------------------------
-
 # Plot in PC coordinates
 pca_plot <- ggplot(data = pca,
                    mapping = aes(x = .fittedPC1, 
@@ -71,9 +70,9 @@ pca_plot <- ggplot(data = pca,
                                            "cm")),
                alpha = 0.75,
                color = "black") +
-  labs(title = "Data in PC coordinates along with attribute loadings",
-       x = "Principal component 1",
-       y = "Principal component 2") +
+  labs(title = "Data in PC Coordinates along with Attribute Loadings",
+       x = "Principal Component 1",
+       y = "Principal Component 2") +
   scale_color_manual(name = "Country",
                      values = c(Tanzania = "#6495ed", 
                                 Vietnam = "#b22222"))
@@ -87,10 +86,11 @@ pca_variance_plot <- pca_fit %>%
            alpha = 0.8) +
   scale_x_continuous(breaks = 1:13) +
   scale_y_continuous(labels = scales::percent_format(),
-                     expand = expansion(mult = c(0, .01))) +
-  labs(title = "Variance explained by each principal component",
-       x = "Principal component",
-       y = "Percentage of variance explained")
+                     expand = expansion(mult = c(0,
+                                                 .01))) +
+  labs(title = "Variance Explained by Each Principal Component",
+       x = "Principal Component",
+       y = "Percentage of Variance Explained")
 
 # Write data --------------------------------------------------------------
 ggsave(file = "/cloud/project/results/pca_plot.png",

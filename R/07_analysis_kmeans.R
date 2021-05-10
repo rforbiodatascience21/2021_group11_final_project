@@ -77,8 +77,8 @@ clust_4_pca_plot <- my_cluster %>%
        y = "Principal component 2",
        color = "Cluster no.",
        title = "KMeans Clusters with Principal Components") + 
-  xlab("Principal component 1") +
-  ylab("Principal component 2") +
+  xlab("Principal Component 1") +
+  ylab("Principal Component 2") +
   labs(color='Cluster no.')
 
 # Write data --------------------------------------------------------------
