@@ -80,7 +80,7 @@ correlation_attributes_bacteria <- my_data_clean_aug %>%
   ylim(min = -0.5,
        max = 0.5) +
   labs(y = "Pearson Correlation Value", 
-       title = "Correlation Bewteen Environmental Features and Bacteria") +
+       title = "Correlations Between Environmental Features and Bacteria") +
   theme(axis.title.x = element_blank(), 
         legend.title = element_blank(), 
         axis.text.x = element_text(angle = 45, 
@@ -93,6 +93,14 @@ correlation_attributes_bacteria <- my_data_clean_aug %>%
 
 # Write data ----------------------------------------------------------
 ggsave(filename = "/cloud/project/results/correlation_attributest.png",
+       width = 10, 
+       height = 6, 
+       dpi = 150,
+       units = "in",
        plot = correlation_attributes)
 ggsave(filename = "/cloud/project/results/correlation_attributes_bacteria.png",
+       width = 10, 
+       height = 6, 
+       dpi = 150,
+       units = "in",
        plot = correlation_attributes_bacteria)

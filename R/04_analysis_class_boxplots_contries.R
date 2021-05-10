@@ -16,7 +16,7 @@ significant_bacteria_contries <- read_tsv(
 # Wrangle data ------------------------------------------------------------
 # Pulls bacteria that are sign. different between the contries as vector
 significant_bacteria <- significant_bacteria_contries %>% 
-  pull(Taxa)
+  pull(Class)
 
 # Visualise data ------------------------------------------------------------
 class_boxplots <- my_data_clean_aug %>%
@@ -44,7 +44,7 @@ class_boxplots <- my_data_clean_aug %>%
                                 Vietnam = "#b22222"))
 
 # Write data ------------------------------------------------------------
-ggsave(file = "/cloud/project/results/taxa_boxplots.png", 
+ggsave(file = "/cloud/project/results/class_boxplots.png", 
        width = 6, 
        height = 4, 
        dpi = 150,
