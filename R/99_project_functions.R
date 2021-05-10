@@ -68,5 +68,25 @@ creating_attribute_violinplot <- function(attribute){
 }
 
 
+run_kmeans <- function(data, n_clusters) {
+  # This function runs Kmeans
+  # The parameters are a tibble and either an integer,
+  # e.g. 3 and a seq eg. 1:9
+  cluster <- tibble(k = n_clusters) %>%
+    mutate(kclust = map(k, 
+                        ~kmeans(data, 
+                                .x)),
+           # One row summary
+           tidied = map(kclust, 
+                        tidy),
+           # Add specifications about the clusters
+           glanced = map(kclust,
+                         glance),
+           # Add the cluster classifications to every data point
+           augmented = map(kclust,
+                           augment,
+                           data))
+  return(cluster)
+}
 
 

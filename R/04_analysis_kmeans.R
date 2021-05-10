@@ -11,100 +11,83 @@ library("scales")
 
 # Define functions --------------------------------------------------------
 source(file = "/cloud/project/R/04_analysis_pca.R")
+source(file = "/cloud/project/R/99_project_functions.R")
 
 
 # Load data ---------------------------------------------------------------
-my_data_clean_aug <- read_tsv(file = "/cloud/project/data/03_my_data_clean_aug.tsv")
+my_data_clean_aug <- read_tsv(
+  file = "/cloud/project/data/03_my_data_clean_aug.tsv")
 
 
 # Wrangle data ------------------------------------------------------------
-#set.seed(10)
-#set.seed(18)
 set.seed(10)
 
   
-# Add pca information to the tibble 
-pca_fit_aug <- augment(pca_fit, data = my_data_clean_aug)
-
-# Get all PCs
-principal_components <- pca_fit_aug %>%
-  select(starts_with(".fittedPC"))
+# Add pca information to the tibble and use only data from PC1 and PC2
+pca_fit_aug <- augment(x = pca_fit,
+                       data = my_data_clean_aug) %>%
+  select(.fittedPC1,
+         .fittedPC2)
 
 # Model Data ---------------------------------------------------------------
 
-# Function that runs kmeans (either with a single number of clusters or a sequence)
-run_kmeans <- function(data, n_clusters) {
-  cluster <- tibble(k = n_clusters) %>%
-    mutate(kclust = map(k, 
-                   ~kmeans(data, .x)),
-      # One row summary
-      tidied = map(kclust, 
-                   tidy),
-      # Add specifications about the clusters
-      glanced = map(kclust,
-                    glance),
-      # Add the cluster classifications to every data point
-      augmented = map(kclust,
-                      augment,
-                      data))
-  return(cluster)
-}
+# Run kmeans for clusters 1-9
+my_9_clusters <- pca_fit_aug %>%
+  run_kmeans(n_clusters = 1:9)
 
-make_assignments <- function(kmeans_cluster) {
-  assignments <- 
-    kmeans_cluster %>% 
-    unnest(cols = c(augmented))
-  return(assignments)
-}
-make_clusterings <- function(kmeans_cluster) {
-  clusterings <- 
-    kmeans_cluster %>%
-    unnest(cols = c(glanced))
-  return(clusterings)
-}
+# Run kmeans for cluster 4 with pca
+my_cluster <- run_kmeans(data = pca_fit_aug,
+                         n_clusters = 4)
 
-clust_1_9 <- run_kmeans(data = principal_components, n_clusters = 1:9)
-clust_1_9_assignments <- make_assignments(clust_1_9)
-clust_4 <- run_kmeans(data = principal_components, n_clusters = 4)
-clust_4_assignments <- make_assignments(clust_4)
-clust_1_9_clusterings <- make_clusterings(clust_1_9)
+# Visualise Data ------------------------------------------------------------
 
-
-# Visualise data ----------------------------------------------------------
-clust_1_9_plot <- 
-  ggplot(clust_1_9_assignments, aes(x = .fittedPC1, y = .fittedPC2)) +
-  geom_point(aes(color = .cluster), alpha = 0.8) + 
+# Plot all 9 clusters
+clust_1_9_plot <- my_9_clusters %>%  
+  unnest(cols = c(augmented)) %>%
+  ggplot(mapping = aes(x = .fittedPC1,
+                       y = .fittedPC2)) +
+  geom_point(mapping = aes(color = .cluster),
+             alpha = 0.8) + 
   facet_wrap(~ k)
 
-# Make elbow plot based on total within sum of squares
-elbowplot <- 
-  ggplot(clust_1_9_clusterings, aes(k, tot.withinss)) +
+# Make elbow plot of these 9 clusters
+elbowplot <- my_9_clusters %>%
+  unnest(cols = c(glanced)) %>%
+  ggplot(mapping = aes(x = k,
+                       y = tot.withinss)) +
   geom_line() +
   geom_point() + 
   scale_x_continuous(breaks = pretty_breaks())
 
-clust_4_plot <- 
-  ggplot(clust_4_assignments, aes(x = .fittedPC1, y = .fittedPC2)) +
-  geom_point(aes(color = .cluster), alpha = 0.8)
-
-
-clust_1_9_plot
-elbowplot
-clust_4_plot
-
-
-
-clust_4_pca_plot <- ggplot(clust_4_assignments, aes(x = .fittedPC1, y = .fittedPC2)) +
-  geom_point(aes(color = .cluster), alpha = 0.8) +
+# Make plot of kmeans with 4 clusters and principal components
+clust_4_pca_plot <- my_cluster %>%
+  unnest(cols = c(augmented)) %>%
+  ggplot(aes(x = .fittedPC1,
+             y = .fittedPC2)) +
+  geom_point(aes(color = .cluster),
+             alpha = 0.8) +
   coord_equal() + 
-  geom_text(data=datapc, aes(x=v1, y=v2, label=varnames), size = 4, vjust=-.1, hjust=1.2, color="black") + 
-  geom_segment(data=datapc, aes(x=0, y=0, xend=v1, yend=v2), 
-               arrow=arrow(length=unit(0.1,"cm")), alpha=0.75, color="black") + 
+  geom_text(data = datapc,
+            aes(x = v1,
+                y = v2,
+                label = varnames),
+            size = 4, 
+            vjust = -.1,
+            hjust = 1.2, 
+            color = "black") + 
+  geom_segment(data = datapc,
+               aes(x = 0,
+                   y = 0,
+                   xend = v1, 
+                   yend = v2), 
+               arrow = arrow(length = unit(0.1, 
+                                           units = "cm")),
+               alpha=0.75,
+               color="black") + 
   xlab("Principal component 1") +
   ylab("Principal component 2") +
   labs(color='Cluster no.')
 
-clust_4_pca_plot
 # Write data --------------------------------------------------------------
 ggsave(file ="/cloud/project/results/elbowplot.png", plot = elbowplot)
 ggsave(file ="/cloud/project/results/clust_1_to_9.png", plot = clust_1_9_plot)
