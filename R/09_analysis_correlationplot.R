@@ -98,6 +98,7 @@ ggsave(filename = "/cloud/project/results/correlation_attributest.png",
        dpi = 150,
        units = "in",
        plot = correlation_attributes)
+
 ggsave(filename = "/cloud/project/results/correlation_attributes_bacteria.png",
        width = 10, 
        height = 6, 
