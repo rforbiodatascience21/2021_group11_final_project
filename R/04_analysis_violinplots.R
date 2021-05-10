@@ -8,12 +8,18 @@ library("tidyverse")
 source(file = "/cloud/project/R/99_project_functions.R")
 
 # Load data ---------------------------------------------------------------
-my_data_clean_aug <- read_tsv(file = "/cloud/project/data/03_my_data_clean_aug.tsv")
+my_data_clean_aug <- read_tsv(
+  file = "/cloud/project/data/03_my_data_clean_aug.tsv")
 
 # Wrangle data ------------------------------------------------------------
 
-# Visualise data --------------------------------------------------------------
-pHandTemp_violinplot <- creating_attribute_violinplot("pH") + creating_attribute_violinplot("Temp")
+# Visualize data ----------------------------------------------------------
+pHTempNH4_violinplot <-  creating_attribute_violinplot("Temp") + 
+  creating_attribute_violinplot("Carbo") + 
+  creating_attribute_violinplot("NH4") + 
+  plot_annotation(
+    title = 'Environmental Features In the Two Countries')
 
 # Write data --------------------------------------------------------------
-ggsave("/cloud/project/results/pHandTemp_violinplot.png")
+ggsave(file = "/cloud/project/results/pHTempNH4_violinplot.png", 
+       plot = pHTempNH4_violinplot)

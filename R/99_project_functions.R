@@ -7,7 +7,7 @@ creating_bacterium_barplot <- function(bacterium, attribute){
   
   # Extracting data concerning the desired bacterium
   bacterium_data <- my_data_clean_aug %>%
-    filter(Taxa == bacterium) %>%
+    filter(Class == bacterium) %>%
     filter(OTU_Count > 0)
 
   # Normalizing binwidth for the barplot
@@ -19,17 +19,23 @@ creating_bacterium_barplot <- function(bacterium, attribute){
   
   # Bar plot with normalized binwidth
   bacterium_attribute_barplot <- ggplot(data = bacterium_data, 
-                                        mapping = aes(x = eval(as.symbol(attribute)), 
-                                                      y=OTU_Count, 
-                                                      fill=site)) +
-    geom_bar(stat="identity", 
-             position="identity", 
+                                        mapping = aes(
+                                          x = eval(as.symbol(attribute)), 
+                                                      y = OTU_Count,
+                                                      fill = site)) +
+    geom_bar(stat = "identity", 
+             position = "identity", 
              width = pull(binwidth,
                           width), 
-             alpha = 0.5) +
+             alpha = 0.5) + 
+    scale_fill_manual("site", 
+                      values = c(Tanzania = "#6495ed", 
+                                         Vietnam = "#b22222")) +
     labs(x = attribute, 
          y = "OTU_Count", 
-         title = bacterium) + 
+         title = paste(attribute, 
+                       "in samples with", 
+                       bacterium)) + 
     theme(legend.position = "bottom", 
           legend.title = element_blank())
   
@@ -47,32 +53,20 @@ creating_attribute_violinplot <- function(attribute){
                y = eval(as.symbol(attribute)), 
                fill = site)) +
     geom_violin(alpha=0.7) +
+    scale_fill_manual("site", 
+                      values = c(Tanzania = "#6495ed", 
+                                         Vietnam = "#b22222")) +
     geom_boxplot(width = 0.05, 
                  color = "grey35", 
                  alpha = 0.7, 
                  outlier.size = 0.5) +
-    labs(y = attribute, 
-         title = paste("Sample", attribute)) +
-    theme(legend.position = "none")
+    labs(y = attribute) +
+    theme(legend.position = "none", 
+          legend.title = element_blank())
 
   return(attribute_violin)
 }
 
-creating_correlation_pointplot <- function(attribute1, attribute2){
-  # This function creates a pointplot with the desired two attributes 
-  # The parameters must be inputted as a strings.
- 
-  correlation_pointplot <- my_data_clean_aug %>%
-    ggplot(aes(x = eval(as.symbol(attribute1)), 
-               y = eval(as.symbol(attribute2)))) +
-    geom_point(size = 3, 
-               alpha=0.7, 
-               color="darkolivegreen2") +
-    labs(title=paste("Point plot of", attribute1, "vs.", attribute2)) +
-    theme(legend.title = element_blank())
-    
-    return(correlation_pointplot)
-}
 
 
 
