@@ -10,12 +10,10 @@ Microbial Technology. 2016
 
 The raw data can be accessed [here](http://userweb.eng.gla.ac.uk/umer.ijaz/bioinformatics/ecological.html) and consists of latrine samples from Vietnam and Tanzania, along with environmental factors and bacterial content. 
 
-In this project, we assess the problem:
-Do we see a difference in the types of bacteria between the samples from Tanzania and Vietnam, and which factors might contribute to these differences?
-
-
 ## The project includes:
-- Data wrangling 
-- Distributions and correlations of various variables including pH, Temperature etc. between the two countries
+- Data cleaning and wrangling
+- Initial Explorative Analysis with e.g. violin plots, correlation analysis and heatmap 
 - Principal Component Analysis
-(...)
+- KMeans Analysis
+- A Comparative Analysis with a t-test on the OTU Counts between Tanzania and Vietnam, an examination of the correlation between certain bacteria
+and environmental factors and examples of distributions
