@@ -25,10 +25,8 @@ class_boxplots <- my_data_clean_aug %>%
          Class, 
          site) %>% 
   filter(Class %in% significant_bacteria) %>% 
-  group_by(Samples) %>% 
-  mutate(norm_count = OTU_Count/sum(OTU_Count)) %>% 
   ggplot(mapping = aes(x = Class, 
-                       y = norm_count, 
+                       y = OTU_Count, 
                        color = site)) +
   geom_boxplot(outlier.size = 0.5,
                outlier.alpha = 0.6) + 
@@ -38,10 +36,12 @@ class_boxplots <- my_data_clean_aug %>%
         axis.text.y=element_text(size = 10)) +
   labs(y = "Proportion",
        x = "Class", 
-       title = "Boxplot for OTU Counts per Bacteria Class split on Contry") +
+       title = "Boxplot for OTU Counts per Bacteria Class split on Country") +
   scale_color_manual(name = "Country",
                      values = c(Tanzania = "#6496ed", 
-                                Vietnam = "#b22222"))
+                                Vietnam = "#b22222")) +
+  ylim(0, 
+       3000)
 
 # Write data ------------------------------------------------------------
 ggsave(file = "/cloud/project/results/class_boxplots.png", 

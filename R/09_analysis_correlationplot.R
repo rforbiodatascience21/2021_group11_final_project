@@ -14,8 +14,8 @@ my_data_clean_aug <- read_tsv(
 significant_bacteria_countries <- read_tsv(
   file = "/cloud/project/results/significant_bacteria.tsv")
 
-# Wrangeling the data -----------------------------------------------------
-# Ectracting bacteria that are significant at alpha = 0.001
+# Wrangling the data -----------------------------------------------------
+# Extracting bacteria that are significant at alpha = 0.001
 significant_bacteria_countries <- significant_bacteria_countries %>%
   filter(p.value <= 0.001) %>%
   select(Class) %>%
