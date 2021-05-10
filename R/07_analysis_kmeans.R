@@ -18,11 +18,9 @@ source(file = "/cloud/project/R/99_project_functions.R")
 my_data_clean_aug <- read_tsv(
   file = "/cloud/project/data/03_my_data_clean_aug.tsv")
 
-
 # Wrangle data ------------------------------------------------------------
 set.seed(10)
 
-  
 # Add pca information to the tibble and use only data from PC1 and PC2
 pca_fit_aug <- augment(x = pca_fit,
                        data = my_data_clean_aug) %>%
@@ -30,7 +28,6 @@ pca_fit_aug <- augment(x = pca_fit,
          .fittedPC2)
 
 # Model Data ---------------------------------------------------------------
-
 # Run kmeans for clusters 1-9
 my_9_clusters <- pca_fit_aug %>%
   run_kmeans(n_clusters = 1:9)
@@ -40,16 +37,6 @@ my_cluster <- run_kmeans(data = pca_fit_aug,
                          n_clusters = 4)
 
 # Visualise Data ------------------------------------------------------------
-
-# Plot all 9 clusters
-clust_1_9_plot <- my_9_clusters %>%  
-  unnest(cols = c(augmented)) %>%
-  ggplot(mapping = aes(x = .fittedPC1,
-                       y = .fittedPC2)) +
-  geom_point(mapping = aes(color = .cluster),
-             alpha = 0.8) + 
-  facet_wrap(~ k)
-
 # Make elbow plot of these 9 clusters
 elbowplot <- my_9_clusters %>%
   unnest(cols = c(glanced)) %>%
@@ -57,7 +44,9 @@ elbowplot <- my_9_clusters %>%
                        y = tot.withinss)) +
   geom_line() +
   geom_point() + 
-  scale_x_continuous(breaks = pretty_breaks())
+  scale_x_continuous(breaks = pretty_breaks()) +
+  labs(y = "Total within SS",
+       title = "Elbowplot")
 
 # Make plot of kmeans with 4 clusters and principal components
 clust_4_pca_plot <- my_cluster %>%
@@ -84,6 +73,10 @@ clust_4_pca_plot <- my_cluster %>%
                                            units = "cm")),
                alpha=0.75,
                color="black") + 
+  labs(x = "Principal component 1",
+       y = "Principal component 2",
+       color = "Cluster no.",
+       title = "KMeans Clusters with Principal Components") + 
   xlab("Principal component 1") +
   ylab("Principal component 2") +
   labs(color='Cluster no.')
@@ -94,12 +87,7 @@ ggsave(file ="/cloud/project/results/elbowplot.png", width = 10,
        dpi = 150,
        units = "in",
        plot = elbowplot)
-ggsave(file ="/cloud/project/results/clust_1_to_9.png",
-       width = 10, 
-       height = 6, 
-       dpi = 150,
-       units = "in",
-       plot = clust_1_9_plot)
+
 ggsave(file ="/cloud/project/results/clust_4_pca.png", 
        width = 10, 
        height = 6, 

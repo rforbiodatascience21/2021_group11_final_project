@@ -1,12 +1,12 @@
 
 
-creating_bacterium_barplot <- function(bacterium, attribute){
+creating_bacterium_barplot <- function(data, bacterium, attribute){
   # This function creates a barplot of with the desired attribute 
   # on the x-axis and OTU_count on the y-axis for the desired 
   # bacterium. The parameters must be inputted as strings.
   
   # Extracting data concerning the desired bacterium
-  bacterium_data <- my_data_clean_aug %>%
+  bacterium_data <- data %>%
     filter(Class == bacterium) %>%
     filter(OTU_Count > 0)
 
@@ -32,10 +32,7 @@ creating_bacterium_barplot <- function(bacterium, attribute){
                       values = c(Tanzania = "#6495ed", 
                                          Vietnam = "#b22222")) +
     labs(x = attribute, 
-         y = "OTU_Count", 
-         title = paste(attribute, 
-                       "in samples with", 
-                       bacterium)) + 
+         y = "OTU Count") + 
     theme(legend.position = "bottom", 
           legend.title = element_blank())
   
@@ -43,12 +40,12 @@ creating_bacterium_barplot <- function(bacterium, attribute){
 }
 
 
-creating_attribute_violinplot <- function(attribute){
+creating_attribute_violinplot <- function(data, attribute){
   # This function creates a violinplot with the desired attribute 
   # on the y-axis and site on the y-axis 
   # The parameter must be inputted as a string.
 
-  attribute_violin <- my_data_clean_aug %>% 
+  attribute_violin <- data %>% 
     ggplot(aes(x = site, 
                y = eval(as.symbol(attribute)), 
                fill = site)) +
@@ -60,7 +57,8 @@ creating_attribute_violinplot <- function(attribute){
                  color = "grey35", 
                  alpha = 0.7, 
                  outlier.size = 0.5) +
-    labs(y = attribute) +
+    labs(y = attribute, 
+         title = str_c("OUT Count in Samples at Different ", attribute)) +
     theme(legend.position = "none", 
           legend.title = element_blank())
 

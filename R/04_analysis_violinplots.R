@@ -14,9 +14,13 @@ my_data_clean_aug <- read_tsv(
 # Wrangle data ------------------------------------------------------------
 
 # Visualize data ----------------------------------------------------------
-TempCarboNH4_violinplot <-  creating_attribute_violinplot("Temp") + 
-  creating_attribute_violinplot("Carbo") + 
-  creating_attribute_violinplot("NH4") + 
+TempCarboNH4_violinplot <-  
+  creating_attribute_violinplot(data = my_data_clean_aug, 
+                                attribute = "Temp") + 
+  creating_attribute_violinplot(data = my_data_clean_aug, 
+                                attribute = "Carbo") + 
+  creating_attribute_violinplot(data = my_data_clean_aug, 
+                                attribute = "NH4") + 
   plot_annotation(
     title = 'Environmental Features In the Two Countries')
 
