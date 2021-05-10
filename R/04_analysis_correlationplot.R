@@ -9,23 +9,26 @@ library("corrr")
 source(file = "/cloud/project/R/99_project_functions.R")
 
 # Load data ---------------------------------------------------------------
-my_data_clean_aug <- read_tsv(file = "/cloud/project/data/03_my_data_clean_aug.tsv")
-significant_bacteria <- read_tsv(file = "/cloud/project/results/significant_bacteria.tsv")
+my_data_clean_aug <- read_tsv(
+  file = "/cloud/project/data/03_my_data_clean_aug.tsv")
+significant_bacteria_countries <- read_tsv(
+  file = "/cloud/project/results/significant_bacteria.tsv")
 
-# Wrangeling the data ---------------------------------------------------------------
+# Wrangeling the data -----------------------------------------------------
 # Ectracting bacteria that are significant at alpha = 0.001
-significant_bacteria <- significant_bacteria %>%
+significant_bacteria_countries <- significant_bacteria_countries %>%
   filter(p.value <= 0.001) %>%
-  select(Taxa) %>%
+  select(Class) %>%
   unlist(use.names = FALSE)
 
 # Visualise data ----------------------------------------------------------
-# Correlation of attributes
+# Created a correlation of attributes
 correlation_attributes <- my_data_clean_aug %>%
   select(where(is.numeric)) %>%
-  # Creates a correlation matrix
-  correlate(use = "all.obs") %>%
-  pivot_longer(-term) %>%
+  select(-OTU_Count) %>%
+  correlate(use = "all.obs",
+            method = "pearson") %>%
+  pivot_longer(cols = -term) %>%
   ggplot(aes(x = factor(term),
              y = value, 
              color = name, 
@@ -38,42 +41,15 @@ correlation_attributes <- my_data_clean_aug %>%
   ylim(min = -1,
        max = 1) +
   labs(y = "Pearson Correlation Value", 
-       title = "Correlation of attributes") +
+       title = "Correlation of Environmental Features") +
   theme(axis.title.x = element_blank(), 
         legend.title = element_blank(), 
-        axis.text.x = element_text(angle = 45, hjust=1))
-
-# Correlation plot of bacteria
-correlation_bacteria <- my_data_clean_aug %>%
-  pivot_wider(names_from = Taxa, 
-              values_from = OTU_Count) %>%
-  select(significant_bacteria) %>%
-  # Creates a correlation matrix
-  correlate(use = "all.obs") %>%
-  # Puts the matrix on long form 
-  pivot_longer(-term) %>%
-  # Plotting the correlation
-  ggplot(aes(x = factor(term), 
-             y = value, 
-             color = name, 
-             group = name))+
-  geom_point(size = 3, 
-             alpha=0.7) +
-  geom_hline(yintercept = 0, 
-             linetype="dashed", 
-             color = "black") +
-  ylim(min = 0,
-       max = 1) +
-  labs(y = "Pearson Correlation Value", 
-       title = "Correlation of significant bacteria") +
-  theme(axis.title.x = element_blank(), 
-        legend.title = element_blank(), 
-        axis.text.x = element_text(angle = 45, hjust=1), 
-        legend.position="bottom")
+        axis.text.x = element_text(angle = 45, 
+                                   hjust=1))
 
 # Correlation plot of attributes vs. bacteria
 correlation_attributes_bacteria <- my_data_clean_aug %>%
-  pivot_wider(names_from = Taxa, 
+  pivot_wider(names_from = Class, 
               values_from = OTU_Count) %>%
   select(c(pH, 
            Temp, 
@@ -86,12 +62,12 @@ correlation_attributes_bacteria <- my_data_clean_aug %>%
            NH4, 
            Prot, 
            Carbo, 
-           significant_bacteria)) %>%
-  # Creates a correlation matrix
-  correlate(use = "all.obs") %>%
-  pivot_longer(-term) %>%
-  filter(!term %in% significant_bacteria) %>%
-  filter(name %in% significant_bacteria) %>%
+           significant_bacteria_countries)) %>%
+  correlate(use = "all.obs",
+            method = "pearson") %>%
+  pivot_longer(cols = -term) %>%
+  filter(!term %in% significant_bacteria_countries) %>%
+  filter(name %in% significant_bacteria_countries) %>%
   ggplot(aes(x = factor(term), 
              y = value, 
              color = name, 
@@ -104,10 +80,11 @@ correlation_attributes_bacteria <- my_data_clean_aug %>%
   ylim(min = -0.5,
        max = 0.5) +
   labs(y = "Pearson Correlation Value", 
-       title = "Correlation of attributes vs. significant bacteria") +
+       title = "Correlation Bewteen Environmental Features and Bacteria") +
   theme(axis.title.x = element_blank(), 
         legend.title = element_blank(), 
-        axis.text.x = element_text(angle = 45, hjust=1), 
+        axis.text.x = element_text(angle = 45, 
+                                   hjust=1), 
         legend.position="bottom")
 
 # This code generates a warning that 5 rows containing NA was removed
@@ -115,6 +92,7 @@ correlation_attributes_bacteria <- my_data_clean_aug %>%
 # thereby yieling NA
 
 # Write data ----------------------------------------------------------
-ggsave("/cloud/project/results/correlation_attributest.png",plot = correlation_attributes)
-ggsave("/cloud/project/results/correlation_bacteria.png",plot = correlation_bacteria)
-ggsave("/cloud/project/results/correlation_attributes_bacteria.png",plot = correlation_attributes_bacteria)
+ggsave(filename = "/cloud/project/results/correlation_attributest.png",
+       plot = correlation_attributes)
+ggsave(filename = "/cloud/project/results/correlation_attributes_bacteria.png",
+       plot = correlation_attributes_bacteria)
