@@ -6,6 +6,7 @@ rm(list = ls())
 
 # Load libraries ----------------------------------------------------------
 library("tidyverse")
+library("scales")
 
 
 # Define functions --------------------------------------------------------
@@ -17,8 +18,10 @@ my_data_clean_aug <- read_tsv(file = "/cloud/project/data/03_my_data_clean_aug.t
 
 
 # Wrangle data ------------------------------------------------------------
-set.seed(3)
-#set.seed(5)
+#set.seed(10)
+#set.seed(18)
+set.seed(10)
+
   
 # Add pca information to the tibble 
 pca_fit_aug <- augment(pca_fit, data = my_data_clean_aug)
@@ -29,15 +32,18 @@ principal_components <- pca_fit_aug %>%
 
 # Model Data ---------------------------------------------------------------
 
-# Function that runs kmeans
+# Function that runs kmeans (either with a single number of clusters or a sequence)
 run_kmeans <- function(data, n_clusters) {
   cluster <- tibble(k = n_clusters) %>%
     mutate(kclust = map(k, 
                    ~kmeans(data, .x)),
+      # One row summary
       tidied = map(kclust, 
                    tidy),
+      # Add specifications about the clusters
       glanced = map(kclust,
                     glance),
+      # Add the cluster classifications to every data point
       augmented = map(kclust,
                       augment,
                       data))
@@ -70,19 +76,22 @@ clust_1_9_plot <-
   geom_point(aes(color = .cluster), alpha = 0.8) + 
   facet_wrap(~ k)
 
+# Make elbow plot based on total within sum of squares
+elbowplot <- 
+  ggplot(clust_1_9_clusterings, aes(k, tot.withinss)) +
+  geom_line() +
+  geom_point() + 
+  scale_x_continuous(breaks = pretty_breaks())
+
 clust_4_plot <- 
   ggplot(clust_4_assignments, aes(x = .fittedPC1, y = .fittedPC2)) +
-  geom_point(aes(color = .cluster), alpha = 0.8) + 
-  facet_wrap(~ k)
+  geom_point(aes(color = .cluster), alpha = 0.8)
 
-elbowplot <- 
-ggplot(clust_1_9_clusterings, aes(k, tot.withinss)) +
-  geom_line() +
-  geom_point()
 
 clust_1_9_plot
-clust_4_plot
 elbowplot
+clust_4_plot
+
 
 
 clust_4_pca_plot <- ggplot(clust_4_assignments, aes(x = .fittedPC1, y = .fittedPC2)) +
@@ -95,6 +104,7 @@ clust_4_pca_plot <- ggplot(clust_4_assignments, aes(x = .fittedPC1, y = .fittedP
   ylab("Principal component 2") +
   labs(color='Cluster no.')
 
+clust_4_pca_plot
 # Write data --------------------------------------------------------------
 ggsave(file ="/cloud/project/results/elbowplot.png", plot = elbowplot)
 ggsave(file ="/cloud/project/results/clust_1_to_9.png", plot = clust_1_9_plot)

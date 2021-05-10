@@ -1,7 +1,7 @@
 ---
 title: "Presentation"
 author: "Group 11: Freja Dahl Hede, Maika Jensen, Malene Nørregaard Nielsen,<br> Sofie Rossen, Sofie Theisen Honore"
-date: Maj 11 / Maj 12, 2021
+date: May 12th 2021
 output: ioslides_presentation
 ---
 <!-- Et slide består normalvis af en overskrift og to chunks
@@ -65,10 +65,21 @@ my_data_clean_aug <- read_tsv(file = "/cloud/project/data/03_my_data_clean_aug.t
 
 <!-- Introduction -->
 # Introduction 
+- Explorative data analysis of bacterial latrine data from Tanzania and Vietnam
+
+Torondel, B. et al., (2016), "Assessment of the influence of intrinsic environmental and geographical factors on the bacterial ecology of pit latrines", Microbial Technology
+
+<!-- Important Communicable disease -->
 
 
 <!-- Materials and methods-->
 # Materials & Methods
+
+## Data 
+3 sets of raw data
+- Abundance data with count per OTU cluster per Sample
+- Taxonomy data per OTU cluster
+- Environmental metadata per sample
 
 ## Extract of Raw Data
 ```{r}
@@ -81,7 +92,7 @@ my_data_raw_counts %>%
   kable_styling(font_size = 12)
 ```
 
-## Meta data
+## Reference data & Metadata
 ```{r, out.width='90%'}
 # Extraxt of taxonomy data
 my_data_raw_taxonomy %>%
@@ -96,9 +107,11 @@ my_data_raw_ENV %>%
   kable("html") %>%
   kable_styling(font_size = 12)
 ```
+## Graphical Representation of Wrangling Process
+<!-- Indsæt figurer her -->
 
-## Data Wrangling
-- Left join twice and add site column to get clean augmented dataset
+
+## Clean and Augmented Data
 ```{r}
 my_data_clean_aug %>%
   select(Samples, Taxa, site, everything()) %>%
@@ -109,72 +122,78 @@ my_data_clean_aug %>%
 ```
 
 # Results
-## Summary statistics
+## Summary Statistics
 
-## Violin plots
+
+## Initial Exploratory Analysis
 ```{r, out.width='90%'}
-knitr::include_graphics('/cloud/project/results/pHandTemp_violinplot.png')
+knitr::include_graphics(
+  path = '/cloud/project/results/pHandTemp_violinplot.png')
 ```
 
-## Correlations of meta data
+## Initial Exploratory Analysis
 ```{r, out.width='90%'}
-knitr::include_graphics('/cloud/project/results/correlation_attributest.png')
+knitr::include_graphics(
+  path = '/cloud/project/results/correlation_attributest.png')
 ```
 
-## Heatmap with hierarchical clustering
+## Initial Exploratory Analysis
 ```{r, out.width='100%'}
-knitr::include_graphics('/cloud/project/results/heatmap_with_dendrogram.png')
+knitr::include_graphics(
+  path = '/cloud/project/results/heatmap_with_dendrogram.png')
 ```
 
-## Heatmap with total bar
+## Initial Exploratory Analysis
 ```{r, out.width='100%'}
-knitr::include_graphics('/cloud/project/results/heatmap_with_totalbar.png')
+knitr::include_graphics(
+  path = '/cloud/project/results/heatmap_with_totalbar.png')
 ```
 
-## PCA 
+## Principal Components Analysis
 ```{r, out.width='100%'}
-knitr::include_graphics('/cloud/project/results/pca_plot.png')
+knitr::include_graphics(
+  path = '/cloud/project/results/pca_plot.png')
 ```
 
 ---
 
 ```{r, out.width='100%'}
-knitr::include_graphics('/cloud/project/results/pca_variance_plot.png')
+knitr::include_graphics(
+  path = '/cloud/project/results/pca_variance_plot.png')
 ```
 
 ## KMeans 
+```{r, out.width='100%'}
+knitr::include_graphics(
+  path = '/cloud/project/results/elbowplot.png')
+```
 
-## T-test
+## KMeans 
+```{r, out.width='100%'}
+knitr::include_graphics(
+  path = '/cloud/project/results/clust_4_pca.png')
+```
+
+## T-test of Difference in OTU Count Between Countries
 ```{r, out.width='90%'}
-knitr::include_graphics('/cloud/project/results/Manhattan_plot.png')
+knitr::include_graphics(
+  path = '/cloud/project/results/Manhattan_plot.png')
 ```
 
 ---
 
 ```{r, out.width='100%'}
-knitr::include_graphics('/cloud/project/results/Error_bar_plot.png')
-```
-
----
-
-```{r, out.width='100%'}
-knitr::include_graphics('/cloud/project/results/Error_bar_plot_zoom.png')
+knitr::include_graphics(
+  path = '/cloud/project/results/Error_bar_plot_zoom.png')
 ```
 
 ## Sample distributions (Tanzania and Vietnam compared)
 
----
 
-### Correlations between significant bacteria
+### Correlations between Environmental Features and Bacteria where OTU Count Differ Significantly between Countries 
 ```{r, out.width='90%'}
-knitr::include_graphics('/cloud/project/results/correlation_bacteria.png')
-```
-
----
-
-### Correlations between significant bacteria and meta data
-```{r, out.width='90%'}
-knitr::include_graphics('/cloud/project/results/correlation_attributes_bacteria.png')
+knitr::include_graphics(
+  path = '/cloud/project/results/correlation_attributes_bacteria.png')
 ```
 
 ## Distributions of significant bacteria based on meta data
@@ -184,7 +203,8 @@ knitr::include_graphics('/cloud/project/results/correlation_attributes_bacteria.
 ---
 
 ```{r, out.width='90%'}
-knitr::include_graphics('/cloud/project/results/bacilli_pH_barplot.png')
+knitr::include_graphics(
+  path = '/cloud/project/results/bacilli_pH_barplot.png')
 ```
 
 
