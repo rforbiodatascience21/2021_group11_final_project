@@ -4,6 +4,8 @@ rm(list = ls())
 # Load libraries ----------------------------------------------------------
 library("patchwork")
 library("ggdendro")
+library("cowplot")
+library("grid")
 library("tidyverse")
 
 # Define functions --------------------------------------------------------
@@ -130,14 +132,14 @@ full_count_heatmap <- (total_count_heatmap / count_heatmap) +
 ggsave(file = "/cloud/project/results/heatmap_with_dendrogram.png", 
        width = 11, 
        height = 7, 
-       dpi = 150,
+       dpi = 200,
        units = "in",
        plot = heatmap_dendro)
 
 ggsave(file = "/cloud/project/results/heatmap_with_totalbar.png", 
        width = 9, 
        height = 5, 
-       dpi = 150,
+       dpi = 200,
        units = "in",
        plot = full_count_heatmap)
 

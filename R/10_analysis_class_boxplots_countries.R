@@ -32,8 +32,8 @@ class_boxplots <- my_data_clean_aug %>%
                outlier.alpha = 0.6) + 
   theme(axis.text.x=element_text(angle = 52, 
                                  hjust = 1, 
-                                 size = 10), 
-        axis.text.y=element_text(size = 10)) +
+                                 size = 8), 
+        axis.text.y=element_text(size = 8)) +
   labs(y = "Proportion",
        x = "Class", 
        title = "Boxplot for OTU Counts per Bacteria Class split on Country") +

@@ -1,26 +1,9 @@
 ---
-title: "Presentation"
-author: "Group 11: Freja Dahl Hede, Maika Jensen, Malene Nørregaard Nielsen,<br> Sofie Rossen, Sofie Theisen Honore"
+title: "Data Exploration of Bacteria in Latrines in Vietnam and Tanzania"
+author: "Group 11: Freja Dahl Hede, Maika Jensen, Malene Nørregaard Nielsen, <br>Sofie Betzer Rossen, Sofie Theisen Honoré"
 date: May 12th 2021
 output: ioslides_presentation
 ---
-<!-- Et slide består normalvis af en overskrift og to chunks
-## Overskrift på Slide, e.g. PCA
-1. Et slide hvor filen med output sources (benyt include=FALSE), OBS: skriv full path
-2. Et slide med output (bruger ggplotly i de fleste tilfælde
--->
-
-<!-- ## Include png example
-```{r, out.width="100%"}
-knitr::include_graphics('/cloud/project/results/Manhattan_plot.png')
-```
--->
-
-<!-- ## Example on how to source files in 
-```{r, include=FALSE}
-#source(file = "/cloud/project/R/04_analysis_statisticaltests.R",local = knitr::knit_global())
-```
--->
 
 ```{r setup, include=FALSE}
 # Clear workspace ---------------------------------------------------------
@@ -28,60 +11,45 @@ rm(list = ls())
 knitr::opts_chunk$set(echo = FALSE)
 
 # Load libraries ----------------------------------------------------------
-library(plotly)
-library(tidyverse)
 library(ggplot2)
-library(glue)
-library(cowplot)
-library(lubridate)
-library(egg)
-library(grid)
-library(DT)
 library(knitr)
 library(kableExtra)
+library(tidyverse)
 ```
 
 ```{r, include = FALSE}
 #### 1. Prepare Data for printing ####
-my_data_raw_counts <- read_csv(file = "/cloud/project/data/_raw/All_Good_P2_C03-1.csv")
-my_data_raw_taxonomy <- read_csv(file = "/cloud/project/data/_raw/All_Good_P2_C03_Taxonomy-1.csv")
-my_data_raw_ENV <- read_csv(file = "/cloud/project/data/_raw/ENV_pitlatrine.csv")
-
-my_data_clean_aug <- read_tsv(file = "/cloud/project/data/03_my_data_clean_aug.tsv")
-#my_data_clean_aug <- tibble(my_data_clean_aug)
-
-#### 2. Convert to interactive table using DT ####
-#d <- my_data_clean_aug %>%
-#  datatable() %>%
-#  formatStyle(columns = colnames(.), fontSize = '10%')
-
-#d=datatable(my_data_clean_aug,width = '90%', options = list(scrollX = TRUE))
-
-
-#### 3. Convert to HTML widget using htmlwidgets ####
-#path <- paste("./dat.html", sep="")
-#saveWidget(as_widget(d), file = path)
+my_data_raw_counts <- read_csv(
+  file = "/cloud/project/data/_raw/All_Good_P2_C03-1.csv")
+my_data_raw_taxonomy <- read_csv(
+  file = "/cloud/project/data/_raw/All_Good_P2_C03_Taxonomy-1.csv")
+my_data_raw_ENV <- read_csv(
+  file = "/cloud/project/data/_raw/ENV_pitlatrine.csv")
+my_data_clean_aug <- read_tsv(
+  file = "/cloud/project/data/03_my_data_clean_aug.tsv")
 ```
 
 <!-- Introduction -->
 # Introduction 
 
-## Explorative data analysis of bacterial latrine data from Tanzania and Vietnam
-Torondel, B. et al., (2016), "Assessment of the influence of intrinsic environmental and geographical factors on the bacterial ecology of pit latrines", Microbial Technology
-
-<!-- Important Communicable disease -->
-
+## Introduction 
+- Explorative data analysis of bacterial latrine data from Tanzania and Vietnam
+- Torondel, B. et al., (2016), 
+"Assessment of the influence of intrinsic environmental and geographical 
+factors on the bacterial ecology of pit latrines",
+Microbial Technology
 
 <!-- Materials-->
 # Materials & Methods
 
 ## Data 
 3 sets of raw data
+
 - Abundance data with count per OTU cluster per sample
 - Taxonomy data per OTU cluster
 - Environmental metadata per sample
 
-## Extract of Raw Data
+## Raw Data Extraction
 ```{r}
 # Random extract of data. Seed is set to 7 to ensure non-0 rows
 set.seed(4)
@@ -110,8 +78,17 @@ my_data_raw_ENV %>%
 ```
 
 
-## Graphical Representation of Wrangling Process
-<!-- Indsæt figurer her -->
+## Representation of Wrangling Process
+```{r, out.width = '90%'}
+knitr::include_graphics(
+  path = '/cloud/project/doc/example_pivotlonger.png')
+```
+
+## Representation of Wrangling Process
+```{r, out.width = '90%'}
+knitr::include_graphics(
+  path = '/cloud/project/doc/example_leftjoin.png')
+```
 
 ## Clean and Augmented Data
 ```{r}
@@ -123,8 +100,18 @@ my_data_clean_aug %>%
   kable_styling(font_size = 9)
 ```
 
-## Graphical Representation of Data Flow
-<!-- Indsæt figurer her -->
+## Methods
+- Hierarchical Clustering
+- Pearson Correlations
+- Principal Component Analysis
+- KMeans Clustering
+- Welch T-test
+
+## Representation of Data Flow
+```{r, out.width = '90%'}
+knitr::include_graphics(
+  path = '/cloud/project/doc/Flowchart_overview.png')
+```
 
 # Results
 ## Summary of Data
@@ -171,104 +158,100 @@ min_OTU <- my_data_clean_aug %>%
 
 
 ## Initial Exploratory Analysis
-```{r, out.width='100%'}
+```{r, out.width = '100%'}
 knitr::include_graphics(
-  path = '/cloud/project/results/TempCarboNH4_violinplot.png')
+  path = '/cloud/project/results/TempCarboNH4pH_violinplot.png')
 ```
 
 ## Initial Exploratory Analysis
-```{r, out.width='100%'}
+```{r, out.width = '100%'}
 knitr::include_graphics(
   path = '/cloud/project/results/correlation_attributest.png')
 ```
 
 ## Initial Exploratory Analysis
-```{r, out.width='100%'}
+```{r, out.width = '100%'}
 knitr::include_graphics(
   path = '/cloud/project/results/heatmap_with_dendrogram.png')
 ```
 
 ## Initial Exploratory Analysis
-```{r, out.width='100%'}
+```{r, out.width = '100%'}
 knitr::include_graphics(
   path = '/cloud/project/results/heatmap_with_totalbar.png')
 ```
 
 ## Principal Components Analysis
-```{r, out.width='100%'}
-knitr::include_graphics(
-  path = '/cloud/project/results/pca_plot.png')
-```
-
----
-
-```{r, out.width='100%'}
+```{r, out.width = '100%'}
 knitr::include_graphics(
   path = '/cloud/project/results/pca_variance_plot.png')
 ```
 
+## Principal Components Analysis
+```{r, out.width = '100%'}
+knitr::include_graphics(
+  path = '/cloud/project/results/pca_plot.png')
+```
+
 ## KMeans Analysis
-```{r, out.width='100%'}
+```{r, out.width = '100%'}
 knitr::include_graphics(
   path = '/cloud/project/results/elbowplot.png')
 ```
 
 ## KMeans Analysis
-```{r, out.width='100%'}
+```{r, out.width = '100%'}
 knitr::include_graphics(
   path = '/cloud/project/results/clust_4_pca.png')
 ```
 
 ## Difference of Bacteria Abundance between Countries
-```{r, out.width='90%'}
+```{r, out.width = '90%'}
 knitr::include_graphics(
   path = '/cloud/project/results/Manhattan_plot.png')
 ```
 
 ## Difference of Bacteria Abundance between Countries
-```{r, out.width='100%'}
+```{r, out.width = '80%'}
 knitr::include_graphics(
   path = '/cloud/project/results/class_boxplots.png')
 ```
 
 ## Difference of Bacteria Abundance between Countries
-<!--Distributions of Environmental Features for Bacteria <br>
-Where OTU Count Differ Significantly Between Countries-->
-```{r, out.width='100%'}
+```{r, out.width = '100%'}
 knitr::include_graphics(
   path = '/cloud/project/results/correlation_attributes_bacteria.png')
 ```
 
 ## Difference of Bacteria Abundance between Countries
-<!--Distributions of Environmental Features for Bacteria <br>
-Where OTU Count Differ Significantly Between Countries-->
-```{r, out.width='100%'}
+```{r, out.width = '100%'}
 knitr::include_graphics(
   path = '/cloud/project/results/gammaproteobacteria_pH_barplot.png')
 ```
 
 ## Difference of Bacteria Abundance between Countries
-<!--Distributions of Environmental Features for Bacteria <br>
-Where OTU Count Differ Significantly Between Countries-->
-```{r, out.width='100%'}
+```{r, out.width = '100%'}
 knitr::include_graphics(
   path = '/cloud/project/results/gammaproteobacteria_Temp_barplot.png')
 ```
 
 ## Difference of Bacteria Abundance between Countries
-<!--Distributions of Environmental Features for Bacteria <br>
-Where OTU Count Differ Significantly Between Countries-->
-```{r, out.width='100%'}
+```{r, out.width = '100%'}
 knitr::include_graphics(
   path = '/cloud/project/results/gammaproteobacteria_Carbo_barplot.png')
 ```
 
-
 ## Difference of Bacteria Abundance between Countries
-<!--Distributions of Environmental Features for Bacteria <br>
-Where OTU Count Differ Significantly Between Countries-->
-```{r, out.width='100%'}
+```{r, out.width = '100%'}
 knitr::include_graphics(
   path = '/cloud/project/results/gammaproteobacteria_NH4_barplot.png')
 ```
+
 # Discussion
+
+## Discussion
+- Difference between OTU count between countries
+
+- Influence from environmental factors
+
+- Hypothesis based on the exploratory analysis

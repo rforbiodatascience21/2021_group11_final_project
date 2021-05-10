@@ -1,4 +1,4 @@
-
+# FUNCTIONS
 
 creating_bacterium_barplot <- function(data, bacterium, attribute){
   # This function creates a barplot of with the desired attribute 
@@ -32,7 +32,9 @@ creating_bacterium_barplot <- function(data, bacterium, attribute){
                       values = c(Tanzania = "#6495ed", 
                                          Vietnam = "#b22222")) +
     labs(x = attribute, 
-         y = "OTU Count") + 
+         y = "OTU Count", 
+         title = str_c("OTU Count in Samples at Different ", attribute)) + 
+    
     theme(legend.position = "bottom", 
           legend.title = element_blank())
   
@@ -58,7 +60,7 @@ creating_attribute_violinplot <- function(data, attribute){
                  alpha = 0.7, 
                  outlier.size = 0.5) +
     labs(y = attribute, 
-         title = str_c("OUT Count in Samples at Different ", attribute)) +
+         title = str_c("Distribution of ", attribute)) +
     theme(legend.position = "none", 
           legend.title = element_blank())
 
